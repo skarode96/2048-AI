@@ -8,7 +8,7 @@
 import random
 
 #######
-#Task 1a#
+# Task 1a#
 #######
 
 # [Marking Scheme]
@@ -61,23 +61,24 @@ def game_state(mat):
         for j in range(len(mat[0])):
             if mat[i][j] == 2048:
                 return 'win'
-    for i in range(len(mat)-1):
+    for i in range(len(mat) - 1):
         # intentionally reduced to check the row on the right and below
         # more elegant to use exceptions but most likely this will be their solution
-        for j in range(len(mat[0])-1):
-            if mat[i][j] == mat[i+1][j] or mat[i][j+1] == mat[i][j]:
+        for j in range(len(mat[0]) - 1):
+            if mat[i][j] == mat[i + 1][j] or mat[i][j + 1] == mat[i][j]:
                 return 'not over'
     for i in range(len(mat)):  # check for any zero entries
         for j in range(len(mat[0])):
             if mat[i][j] == 0:
                 return 'not over'
-    for k in range(len(mat)-1):  # to check the left/right entries on the last row
-        if mat[len(mat)-1][k] == mat[len(mat)-1][k+1]:
+    for k in range(len(mat) - 1):  # to check the left/right entries on the last row
+        if mat[len(mat) - 1][k] == mat[len(mat) - 1][k + 1]:
             return 'not over'
-    for j in range(len(mat)-1):  # check up/down entries on last column
-        if mat[j][len(mat)-1] == mat[j+1][len(mat)-1]:
+    for j in range(len(mat) - 1):  # check up/down entries on last column
+        if mat[j][len(mat) - 1] == mat[j + 1][len(mat) - 1]:
             return 'not over'
     return 'lose'
+
 
 ###########
 # Task 2a #
@@ -95,8 +96,9 @@ def reverse(mat):
     for i in range(len(mat)):
         new.append([])
         for j in range(len(mat[0])):
-            new[i].append(mat[i][len(mat[0])-j-1])
+            new[i].append(mat[i][len(mat[0]) - j - 1])
     return new
+
 
 ###########
 # Task 2b #
@@ -116,6 +118,7 @@ def transpose(mat):
         for j in range(len(mat)):
             new[i].append(mat[j][i])
     return new
+
 
 ##########
 # Task 3 #
@@ -142,18 +145,20 @@ def cover_up(mat):
                 if j != count:
                     done = True
                 count += 1
-    return (new, done)
+    return new, done
 
 
 def merge(mat):
     done = False
+    local_score = 0
     for i in range(4):
         for j in range(3):
-            if mat[i][j] == mat[i][j+1] and mat[i][j] != 0:
+            if mat[i][j] == mat[i][j + 1] and mat[i][j] != 0:
                 mat[i][j] *= 2
-                mat[i][j+1] = 0
+                local_score += mat[i][j]
+                mat[i][j + 1] = 0
                 done = True
-    return (mat, done)
+    return mat, done, local_score
 
 
 def up(game):
@@ -166,7 +171,7 @@ def up(game):
     done = done or temp[1]
     game = cover_up(game)[0]
     game = transpose(game)
-    return (game, done)
+    return game, done, temp[2]
 
 
 def down(game):
@@ -178,7 +183,7 @@ def down(game):
     done = done or temp[1]
     game = cover_up(game)[0]
     game = transpose(reverse(game))
-    return (game, done)
+    return game, done, temp[2]
 
 
 def left(game):
@@ -189,7 +194,7 @@ def left(game):
     game = temp[0]
     done = done or temp[1]
     game = cover_up(game)[0]
-    return (game, done)
+    return game, done, temp[2]
 
 
 def right(game):
@@ -202,4 +207,4 @@ def right(game):
     done = done or temp[1]
     game = cover_up(game)[0]
     game = reverse(game)
-    return (game, done)
+    return game, done, temp[2]

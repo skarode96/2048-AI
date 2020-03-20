@@ -5,11 +5,13 @@ import time
 import logic
 import constants as c
 
-actions = ["<<UP>>","<<DOWN>>","<<LEFT>>","<<RIGHT>>"]
+actions = ["<<UP>>", "<<DOWN>>", "<<LEFT>>", "<<RIGHT>>"]
+
 
 class Event:
     def __init__(self, char):
         self.char = char
+
 
 class GameGrid(Frame):
     def __init__(self):
@@ -18,11 +20,11 @@ class GameGrid(Frame):
         self.grid()
         self.master.title('2048')
         self.master.bind("<Key>", self.key_down)
-        self.master.bind("<Escape>", lambda q:self.master.destroy())
-        self.master.bind("<<UP>>", lambda q:self.key_down(Event("w")))
-        self.master.bind("<<DOWN>>", lambda q:self.key_down(Event("s")))
-        self.master.bind("<<LEFT>>", lambda q:self.key_down(Event("a")))
-        self.master.bind("<<RIGHT>>", lambda q:self.key_down(Event("d")))
+        self.master.bind("<Escape>", lambda q: self.master.destroy())
+        self.master.bind("<<UP>>", lambda q: self.key_down(Event("w")))
+        self.master.bind("<<DOWN>>", lambda q: self.key_down(Event("s")))
+        self.master.bind("<<LEFT>>", lambda q: self.key_down(Event("a")))
+        self.master.bind("<<RIGHT>>", lambda q: self.key_down(Event("d")))
 
         # self.gamelogic = gamelogic
         self.commands = {c.KEY_UP: logic.up, c.KEY_DOWN: logic.down,
@@ -31,33 +33,42 @@ class GameGrid(Frame):
                          c.KEY_LEFT_ALT: logic.left, c.KEY_RIGHT_ALT: logic.right,
                          c.KEY_H: logic.left, c.KEY_L: logic.right,
                          c.KEY_K: logic.up, c.KEY_J: logic.down}
-        
+
         self.grid_cells = []
+        self.init_score()
         self.init_grid()
         self.init_matrix()
         self.update_grid_cells()
         # self.mainloop()
 
+    def init_score(self):
+        self.score = 0
+
     def init_grid(self):
         background = Frame(self, bg=c.BACKGROUND_COLOR_GAME,
                            width=c.SIZE, height=c.SIZE)
         background.grid()
-
         for i in range(c.GRID_LEN):
             grid_row = []
             for j in range(c.GRID_LEN):
-                cell = Frame(background, bg=c.BACKGROUND_COLOR_CELL_EMPTY,
-                             width=c.SIZE / c.GRID_LEN,
-                             height=c.SIZE / c.GRID_LEN)
-                cell.grid(row=i, column=j, padx=c.GRID_PADDING,
-                          pady=c.GRID_PADDING)
-                t = Label(master=cell, text="",
-                          bg=c.BACKGROUND_COLOR_CELL_EMPTY,
-                          justify=CENTER, font=c.FONT, width=5, height=2)
-                t.grid()
-                grid_row.append(t)
-
+                cell = self.create_cell(i, j, background, "")
+                grid_row.append(cell)
             self.grid_cells.append(grid_row)
+        score_text_cell = self.create_cell(4, 0, background, "Score")
+        score_cell = self.create_cell(4, 1, background, self.score)
+        self.grid_cells.append([score_text_cell, score_cell])
+
+    def create_cell(self, x, y, background, text):
+        cell = Frame(background, bg=c.BACKGROUND_COLOR_SCORE,
+                     width=c.SIZE / c.GRID_LEN,
+                     height=c.SIZE / c.GRID_LEN)
+        cell.grid(row=x, column=y, padx=c.GRID_PADDING,
+                  pady=c.GRID_PADDING)
+        t1 = Label(master=cell, text=text,
+                   bg=c.BACKGROUND_COLOR_SCORE,
+                   justify=CENTER, font=c.FONT, width=5, height=2)
+        t1.grid()
+        return t1
 
     def gen(self):
         return random.randint(0, c.GRID_LEN - 1)
@@ -79,17 +90,21 @@ class GameGrid(Frame):
                     self.grid_cells[i][j].configure(text=str(
                         new_number), bg=c.BACKGROUND_COLOR_DICT[new_number],
                         fg=c.CELL_COLOR_DICT[new_number])
+        self.grid_cells[4][0].configure(text="Score", bg=c.BACKGROUND_COLOR_SCORE,
+                                                   fg=c.FOREGROUND_COLOR_SCORE)
+        self.grid_cells[4][1].configure(text=str(self.score), bg=c.BACKGROUND_COLOR_SCORE,
+                                        fg=c.FOREGROUND_COLOR_SCORE)
         self.update_idletasks()
 
     def key_down(self, event):
-        print(event.char)
         key = repr(event.char)
         if key == c.KEY_BACK and len(self.history_matrixs) > 1:
             self.matrix = self.history_matrixs.pop()
             self.update_grid_cells()
             print('back on step total step:', len(self.history_matrixs))
         elif key in self.commands:
-            self.matrix, done = self.commands[repr(event.char)](self.matrix)
+            self.matrix, done, local_score = self.commands[repr(event.char)](self.matrix)
+            self.score += local_score
             if done:
                 self.matrix = logic.add_two(self.matrix)
                 # record last move
@@ -116,11 +131,11 @@ class GameGrid(Frame):
 
 gamegrid = GameGrid()
 
-
 # Randomly generate actions
 for i in range(10):
     random_action = random.randint(0, 3)
+    print(gamegrid.score)
     gamegrid.master.event_generate(actions[random_action])
-    time.sleep(0.5)
+    time.sleep(0.1)
 
-# gamegrid.mainloop()
+#gamegrid.mainloop()
