@@ -5,7 +5,8 @@ import time
 import logic
 import constants as c
 
-actions = ["<<UP>>", "<<DOWN>>", "<<LEFT>>", "<<RIGHT>>"]
+actions_name = ["<<UP>>", "<<DOWN>>", "<<LEFT>>", "<<RIGHT>>"]
+actions_func = [logic.up, logic.down, logic.left, logic.right]
 
 
 class Event:
@@ -91,7 +92,7 @@ class GameGrid(Frame):
                         new_number), bg=c.BACKGROUND_COLOR_DICT[new_number],
                         fg=c.CELL_COLOR_DICT[new_number])
         self.grid_cells[4][0].configure(text="Score", bg=c.BACKGROUND_COLOR_SCORE,
-                                                   fg=c.FOREGROUND_COLOR_SCORE)
+                                        fg=c.FOREGROUND_COLOR_SCORE)
         self.grid_cells[4][1].configure(text=str(self.score), bg=c.BACKGROUND_COLOR_SCORE,
                                         fg=c.FOREGROUND_COLOR_SCORE)
         self.update_idletasks()
@@ -131,11 +132,30 @@ class GameGrid(Frame):
 
 gamegrid = GameGrid()
 
-# Randomly generate actions
-for i in range(10):
-    random_action = random.randint(0, 3)
-    print(gamegrid.score)
-    gamegrid.master.event_generate(actions[random_action])
-    time.sleep(0.1)
 
-#gamegrid.mainloop()
+def random_algo():
+    for i in range(100):
+        random_action = random.randint(0, 3)
+        gamegrid.master.event_generate(actions_name[random_action])
+    print("final Score : " + str(gamegrid.score))
+
+
+def greedy_algo():
+    for i in range(100):
+        scores = []
+        for action in actions_func:
+            game, done, local_score = action(gamegrid.matrix)
+            scores.append(local_score)
+
+        max_score = max(scores)
+        index = scores.index(max_score)
+        if sum(scores) == 0:
+            index = random.randint(0, 3)
+        gamegrid.master.event_generate(actions_name[index])
+        time.sleep(0.01)
+    print("final Score : " + str(gamegrid.score))
+
+
+# random_algo()
+greedy_algo()
+# gamegrid.mainloop()
