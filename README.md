@@ -14,5 +14,5 @@ cd 2048/
 
 * Run
 ```
-python3 puzzle.py
+python3 main**.py
 ```
