@@ -12,7 +12,7 @@ class Event:
 
 
 class GameGrid(Frame):
-    def __init__(self):
+    def __init__(self, param = None):
         Frame.__init__(self)
 
         self.grid()
@@ -35,7 +35,7 @@ class GameGrid(Frame):
         self.grid_cells = []
         self.init_score()
         self.init_grid()
-        self.init_matrix()
+        self.init_matrix(param)
         self.update_grid_cells()
         # self.mainloop()
 
@@ -71,11 +71,15 @@ class GameGrid(Frame):
     def gen(self):
         return random.randint(0, c.GRID_LEN - 1)
 
-    def init_matrix(self):
-        self.matrix = logic.new_game(4)
-        self.history_matrixs = list()
-        self.matrix = logic.add_two(self.matrix)
-        self.matrix = logic.add_two(self.matrix)
+    def init_matrix(self, mat = None):
+        if mat is None:
+            self.matrix = logic.new_game(4)
+            self.history_matrixs = list()
+            self.matrix = logic.add_two(self.matrix)
+            self.matrix = logic.add_two(self.matrix)
+        else:
+            self.matrix = mat
+            self.history_matrixs = list()
 
     def update_grid_cells(self):
         for i in range(c.GRID_LEN):
@@ -125,5 +129,3 @@ class GameGrid(Frame):
         while self.matrix[index[0]][index[1]] != 0:
             index = (self.gen(), self.gen())
         self.matrix[index[0]][index[1]] = 2
-
-
