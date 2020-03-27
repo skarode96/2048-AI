@@ -23,6 +23,7 @@ class GameGrid(Frame):
         self.master.bind("<<DOWN>>", lambda q: self.key_down(Event("s")))
         self.master.bind("<<LEFT>>", lambda q: self.key_down(Event("a")))
         self.master.bind("<<RIGHT>>", lambda q: self.key_down(Event("d")))
+        self.master.bind("<<QUIT>>", lambda q: self.master.destroy())
 
         # self.gamelogic = gamelogic
         self.commands = {c.KEY_UP: logic.up, c.KEY_DOWN: logic.down,
