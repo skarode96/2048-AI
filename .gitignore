@@ -3,3 +3,6 @@ venv
 *.aux
 *.pdf
 *.gz
+2048/__pycache__/*
+.idea
+game
