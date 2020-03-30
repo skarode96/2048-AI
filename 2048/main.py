@@ -101,7 +101,9 @@ def expectiminimax_algo():
     moves_count = 0
     board = GameGrid(expectiminmax=True)
     evaluation_list = []
-    while True:
+    header_list = ["Move", "Score"]
+    evaluation_list.append(header_list)
+    while moves_count < 1000:
         # Find all moves with the fitness
         # List of Tuples: moves_list = [(move, finess_value), ...]
         moves_list = get_moves(board.matrix)
