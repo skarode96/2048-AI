@@ -3,6 +3,7 @@ import logic
 import random
 import time
 import math
+import datetime
 
 import numpy as np
 import pandas as pd
@@ -161,7 +162,9 @@ scores = []
 final_parameters = {}
 
 #number of episodes
-M = 100
+M = 20001
+
+start_time = time.time()
 
 with tf.Session() as session:
     tf.global_variables_initializer().run()
@@ -403,16 +406,18 @@ with tf.Session() as session:
 
         print()
 
-        if((ep+1)%1000==0):
+        if((ep + 1) % 1000 == 0):
             print("Maximum Score : {} ,Episode : {}".format(maximum, episode))
             print("Loss : {}".format(J[len(J)-1]))
             print()
 
-        if(maximum<total_score):
+        if(maximum < total_score):
             maximum = total_score
             episode = ep
 
     print("Maximum Score : {} ,Episode : {}".format(maximum, episode))
 
+total_time = str(datetime.timedelta(seconds=int(time.time() - start_time)))
+print("Total time : ", total_time)
 csv_results = pd.DataFrame.from_dict(results)
 csv_results.to_csv('dqn.csv')
