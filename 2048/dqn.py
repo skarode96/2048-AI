@@ -2,14 +2,26 @@ import puzzle
 import logic
 import random
 import time
-import numpy as np
 import math
+
+import numpy as np
+import pandas as pd
 import tensorflow.compat.v1 as tf
 from copy import deepcopy
 
 tf.compat.v1.disable_eager_execution()
 
-#find the number of empty cells in the game matrix.
+# Dictionary to store all results
+results = {
+    'episode': [],
+    'score': [],
+    'finish': [],
+    'lose_board': [],
+    'epsilon': [],
+    'learning_rate': []
+}
+
+# find the number of empty cells in the game matrix.
 def findemptyCell(mat):
     count = 0
     for i in range(len(mat)):
@@ -18,7 +30,7 @@ def findemptyCell(mat):
                 count+=1
     return count
 
-#convert the input game matrix into corresponding power of 2 matrix.
+# convert the input game matrix into corresponding power of 2 matrix.
 def change_values(X):
     power_mat = np.zeros(shape=(1,4,4,16),dtype=np.float32)
     for i in range(4):
@@ -129,7 +141,7 @@ single_output = model(single_dataset)
 #for batch data
 logits = model(tf_batch_dataset)
 
-#loss
+# loss
 loss = tf.square(tf.subtract(tf_batch_labels,logits))
 loss = tf.reduce_sum(loss, axis=1, keep_dims=True)
 loss = tf.reduce_mean(loss) / 2.0
@@ -149,7 +161,7 @@ scores = []
 final_parameters = {}
 
 #number of episodes
-M = 1000
+M = 100
 
 with tf.Session() as session:
     tf.global_variables_initializer().run()
@@ -381,10 +393,18 @@ with tf.Session() as session:
         scores.append(total_score)
 
         print("Episode {} finished with score {}, result : {} board : {}, epsilon  : {}, learning rate : {} ".format(ep,total_score,finish,board,epsilon,session.run(learning_rate)))
+
+        results['episode'].append(ep)
+        results['score'].append(total_score)
+        results['finish'].append(finish)
+        results['lose_board'].append(board)
+        results['epsilon'].append(epsilon)
+        results['learning_rate'].append(session.run(learning_rate))
+
         print()
 
         if((ep+1)%1000==0):
-            print("Maximum Score : {} ,Episode : {}".format(maximum,episode))
+            print("Maximum Score : {} ,Episode : {}".format(maximum, episode))
             print("Loss : {}".format(J[len(J)-1]))
             print()
 
@@ -392,4 +412,7 @@ with tf.Session() as session:
             maximum = total_score
             episode = ep
 
-    print("Maximum Score : {} ,Episode : {}".format(maximum,episode))
+    print("Maximum Score : {} ,Episode : {}".format(maximum, episode))
+
+csv_results = pd.DataFrame.from_dict(results)
+csv_results.to_csv('dqn.csv')
