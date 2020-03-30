@@ -1,8 +1,8 @@
 import random
 import logic
 from tkinter import Frame, Label, CENTER
-
-
+import itertools
+import expectiminmax
 import constants as c
 
 
@@ -12,7 +12,7 @@ class Event:
 
 
 class GameGrid(Frame):
-    def __init__(self, param = None):
+    def __init__(self, param = None, expectiminmax=False):
         Frame.__init__(self)
 
         self.grid()
@@ -36,6 +36,7 @@ class GameGrid(Frame):
         self.grid_cells = []
         self.init_score()
         self.init_grid()
+        self.is_expectiminmax = expectiminmax
         self.init_matrix(param)
         self.update_grid_cells()
         # self.mainloop()
@@ -78,9 +79,32 @@ class GameGrid(Frame):
             self.history_matrixs = list()
             self.matrix = logic.add_two(self.matrix)
             self.matrix = logic.add_two(self.matrix)
+        elif self.is_expectiminmax is True:
+            self.matrix = [[0] * 4 for _ in range(4)]
+            self.history_matrixs = list()
+            # Generate 2 tiles when the game begins
+            self.generate_tiles(2)
         else:
             self.matrix = mat
             self.history_matrixs = list()
+
+    def generate_tiles(self, tiles = 1):
+        """ Default should only spawn 1 slide as the game progress."""
+        if self.move_exists(self.matrix) or self.move_exists(zip(*self.matrix)):
+            rows, cols = list(range(4)), list(range(4))
+            random.shuffle(rows)
+            random.shuffle(cols)
+            distribution = [2] * 9 + [4]
+            count = 0
+            for i, j in itertools.product(rows, rows):
+                if count == tiles: return True
+                if self.matrix[i][j] != 0: continue
+
+                self.matrix[i][j] = random.sample(distribution, 1)[0]
+                count += 1
+            return False
+        else:
+            return False
 
     def update_grid_cells(self):
         for i in range(c.GRID_LEN):
@@ -125,8 +149,22 @@ class GameGrid(Frame):
                     self.grid_cells[1][2].configure(
                         text="Lose!", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
 
+
     def generate_next(self):
         index = (self.gen(), self.gen())
         while self.matrix[index[0]][index[1]] != 0:
             index = (self.gen(), self.gen())
         self.matrix[index[0]][index[1]] = 2
+
+    def play_move(self, move):
+        if self.move_exists(self.matrix) or self.move_exists(zip(*self.matrix)):
+            self.matrix, _, local_score = expectiminmax.MERGE_FUNCTIONS[move](self.matrix)
+            self.score += local_score
+            return self.generate_tiles()
+
+    def move_exists(self, board):
+        for row in board:
+            for x, y in zip(row[:-1], row[1:]):
+                if x == y or x == 0 or y == 0:
+                    return True
+        return False
