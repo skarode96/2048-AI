@@ -68,7 +68,11 @@ def is_all_heuristics_equal(result_scores):
 
 def mcts_algo():
     gamegrid = puzzle.GameGrid()
-    for i in range(100):
+    evaluation_list = []
+    header_list = ["Move", "Score"]
+    evaluation_list.append(header_list)
+    moves_count = 0
+    for i in range(1000):
         heuristics = list()
         for move in moves:
             heuristic_for_move = monte_carlo_search_score(gamegrid, move)
@@ -79,7 +83,15 @@ def mcts_algo():
         max_heuristic_index = heuristics.index(max(heuristics))
         gamegrid.master.event_generate(action_name_dict[max_heuristic_index])
         time.sleep(0.01)
+        moves_count += 1
+        evaluation_row = []
+        evaluation_row.append(moves_count)
+        evaluation_row.append(gamegrid.score)
+        evaluation_list.append(evaluation_row)
     gamegrid.master.event_generate("<<QUIT>>")
+    with open('../evaluations/mcts_scores.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(evaluation_list)
     print("Algorithm: MCTS ==> final Score ==> " + str(gamegrid.score))
 
 
@@ -91,7 +103,6 @@ def monte_carlo_search_score(gamegrid, move):
         random_move = get_random_move_function()
         new_game_state, done, score_for_current_move = random_move(new_game_state)
         scores.append(score_for_current_move)
-
     return sum(scores) / len(scores)
 
 
