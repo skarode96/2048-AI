@@ -38,16 +38,32 @@ def get_random_move_function():
 
 def random_algo():
     gamegrid = puzzle.GameGrid()
-    for i in range(100):
+    evaluation_list = []
+    header_list = ["Move", "Score"]
+    evaluation_list.append(header_list)
+    moves_count = 0
+    for i in range(1000):
         gamegrid.master.event_generate(get_random_move_name())
         time.sleep(0.01)
+        moves_count += 1
+        evaluation_row = []
+        evaluation_row.append(moves_count)
+        evaluation_row.append(gamegrid.score)
+        evaluation_list.append(evaluation_row)
+    with open('../evaluations/random_scores.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(evaluation_list)
     gamegrid.master.event_generate("<<QUIT>>")
     print("Algorithm: random ==> final Score ==> " + str(gamegrid.score))
 
 
 def greedy_algo():
     gamegrid = puzzle.GameGrid()
-    for i in range(100):
+    evaluation_list = []
+    header_list = ["Move", "Score"]
+    evaluation_list.append(header_list)
+    moves_count = 0
+    for i in range(1000):
         scores = []
         for move in moves:
             new_game_state, done, score_for_current_move = move(gamegrid.matrix)
@@ -58,6 +74,14 @@ def greedy_algo():
             max_score_action_index = random.randint(0, 3)
         gamegrid.master.event_generate(action_name_dict[max_score_action_index])
         time.sleep(0.01)
+        moves_count += 1
+        evaluation_row = []
+        evaluation_row.append(moves_count)
+        evaluation_row.append(gamegrid.score)
+        evaluation_list.append(evaluation_row)
+    with open('../evaluations/greedy_scores.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(evaluation_list)
     gamegrid.master.event_generate("<<QUIT>>")
     print("Algorithm: greedy ==> final Score ==> " + str(gamegrid.score))
 
