@@ -6,3 +6,4 @@ venv
 2048/__pycache__/*
 .idea
 game
+.ipynb_checkpoints
