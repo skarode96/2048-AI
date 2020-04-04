@@ -1,6 +1,6 @@
 import csv
 import time
-import constants as c
+from game import constants as c
 from utils.GameUtils import GameUtils
 
 from game import puzzle

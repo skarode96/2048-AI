@@ -3,7 +3,7 @@ import time
 import random
 import csv
 from utils.GameUtils import GameUtils
-import constants as c
+from game import constants as c
 
 class GreedyAlgorithm:
     def __init__(self):

@@ -2,7 +2,7 @@ import random
 from game import logic
 from tkinter import Frame, Label, CENTER
 import itertools
-import constants as c
+from game import constants as c
 
 
 class Event:
