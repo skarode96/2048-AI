@@ -8,6 +8,9 @@ class Test(TestCase):
     def test_greedy_algo(self):
         main.greedy_algo()
 
+    def test_greedy_algo_with_heuristics(self):
+        main.greedy_algo_with_empty_cell_heuristics()
+
     def test_mcts_algo(self):
         main.mcts_algo()
 
