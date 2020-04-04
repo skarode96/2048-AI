@@ -7,6 +7,10 @@ from expectiminmax import get_moves
 import csv
 
 MCT_SEARCH_DEPTH = 300
+Alpha = 0.5
+Beta = 0.5
+K = 1
+
 
 actions_name = ["<<UP>>", "<<DOWN>>", "<<LEFT>>", "<<RIGHT>>"]
 moves = [logic.up, logic.down, logic.left, logic.right]
@@ -42,7 +46,7 @@ def random_algo():
     header_list = ["Move", "Score"]
     evaluation_list.append(header_list)
     moves_count = 0
-    for i in range(1000):
+    for i in range(400):
         gamegrid.master.event_generate(get_random_move_name())
         time.sleep(0.01)
         moves_count += 1
@@ -53,6 +57,7 @@ def random_algo():
         writer.writerows(evaluation_list)
     print("Algorithm: random ==> final Score ==> " + str(gamegrid.score))
     gamegrid.master.event_generate("<<QUIT>>")
+    return gamegrid.score
 
 
 def greedy_algo():
@@ -61,7 +66,7 @@ def greedy_algo():
     header_list = ["Move", "Score"]
     evaluation_list.append(header_list)
     moves_count = 0
-    for i in range(1000):
+    for i in range(400):
         scores = []
         for move in moves:
             new_game_state, done, score_for_current_move, empty_cells_count = move(gamegrid.matrix)
@@ -80,6 +85,7 @@ def greedy_algo():
         writer.writerows(evaluation_list)
     print("Algorithm: greedy ==> final Score ==> " + str(gamegrid.score))
     gamegrid.master.event_generate("<<QUIT>>")
+    return gamegrid.score
 
 
 def greedy_algo_with_empty_cell_heuristics():
@@ -88,16 +94,15 @@ def greedy_algo_with_empty_cell_heuristics():
     header_list = ["Move", "Score"]
     evaluation_list.append(header_list)
     moves_count = 0
-    for i in range(1000):
+    for i in range(400):
         scores = []
         for move in moves:
             new_game_state, done, score_for_current_move, empty_cells_count = move(gamegrid.matrix)
-            weighted_score = 0.5 * score_for_current_move + 0.5 * empty_cells_count + 1
+            weighted_score = Alpha * score_for_current_move + Beta * empty_cells_count + K
             scores.append(weighted_score)
         max_score = max(scores)
         max_score_action_index = scores.index(max_score)
-        if sum(scores) / scores[
-            0] == 4:  # if all the moves are leading to 0 then choose random move to move things ahead
+        if sum(scores) / scores[0] == 4:  # if all the moves are same then choose random move to move things ahead
             max_score_action_index = random.randint(0, 3)
         gamegrid.master.event_generate(action_name_dict[max_score_action_index])
         time.sleep(0.01)
@@ -109,6 +114,7 @@ def greedy_algo_with_empty_cell_heuristics():
         writer.writerows(evaluation_list)
     print("Algorithm: greedy with heuristics ==> final Score ==> " + str(gamegrid.score))
     gamegrid.master.event_generate("<<QUIT>>")
+    return gamegrid.score
 
 
 def is_all_mcts_heuristics_equal(result_scores):
@@ -121,7 +127,7 @@ def mcts_algo():
     header_list = ["Move", "Score"]
     evaluation_list.append(header_list)
     moves_count = 0
-    for i in range(1000):
+    for i in range(400):
         heuristics = list()
         for move in moves:
             heuristic_for_move = monte_carlo_search_score(gamegrid, move)
@@ -142,6 +148,7 @@ def mcts_algo():
         writer = csv.writer(file)
         writer.writerows(evaluation_list)
     print("Algorithm: MCTS ==> final Score ==> " + str(gamegrid.score))
+    return gamegrid.score
 
 
 def monte_carlo_search_score(gamegrid, move):
@@ -162,7 +169,7 @@ def expectiminimax_algo():
     evaluation_list = []
     header_list = ["Move", "Score"]
     evaluation_list.append(header_list)
-    while moves_count < 1000:
+    while moves_count < 400:
         # Find all moves with the fitness
         # List of Tuples: moves_list = [(move, finess_value), ...]
         moves_list = get_moves(board.matrix)
@@ -194,3 +201,4 @@ def expectiminimax_algo():
         evaluation_row = [moves_count, board.score]
         evaluation_list.append(evaluation_row)
     board.master.event_generate("<<QUIT>>")
+    return board.score
