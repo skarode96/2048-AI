@@ -164,43 +164,43 @@ def merge(mat):
 def up(game):
     # return matrix after shifting up
     game = transpose(game)
-    game, done = cover_up(game)
-    temp = merge(game)
-    game = temp[0]
-    done = done or temp[1]
+    game, d = cover_up(game)
+    mat, done, local_score = merge(game)
+    game = mat
+    done = d or done
     game = cover_up(game)[0]
     game = transpose(game)
-    return game, done, temp[2]
+    return game, done, local_score
 
 
 def down(game):
     game = reverse(transpose(game))
-    game, done = cover_up(game)
-    temp = merge(game)
-    game = temp[0]
-    done = done or temp[1]
+    game, d = cover_up(game)
+    mat, done, local_score = merge(game)
+    game = mat
+    done = done or d
     game = cover_up(game)[0]
     game = transpose(reverse(game))
-    return game, done, temp[2]
+    return game, done, local_score
 
 
 def left(game):
     # return matrix after shifting left
-    game, done = cover_up(game)
-    temp = merge(game)
-    game = temp[0]
-    done = done or temp[1]
+    game, d = cover_up(game)
+    mat, done, local_score = merge(game)
+    game = mat
+    done = done or d
     game = cover_up(game)[0]
-    return game, done, temp[2]
+    return game, done, local_score
 
 
 def right(game):
     # return matrix after shifting right
     game = reverse(game)
-    game, done = cover_up(game)
-    temp = merge(game)
-    game = temp[0]
-    done = done or temp[1]
+    game, d = cover_up(game)
+    game, done, local_score = merge(game)
+    game = game
+    done = done or d
     game = cover_up(game)[0]
     game = reverse(game)
-    return game, done, temp[2]
+    return game, done, local_score
