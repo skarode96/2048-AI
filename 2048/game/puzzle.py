@@ -155,9 +155,9 @@ class GameGrid(Frame):
             index = (self.gen(), self.gen())
         self.matrix[index[0]][index[1]] = 2
 
-    def play_move(self, move):
+    def play_move(self, move, merge_functions):
         if self.move_exists(self.matrix) or self.move_exists(zip(*self.matrix)):
-            self.matrix, _, local_score, _ , _= expectiminmax.MERGE_FUNCTIONS[move](self.matrix)
+            self.matrix, _, local_score, _ , _= merge_functions[move](self.matrix)
             self.score += local_score
             return self.generate_tiles()
 
