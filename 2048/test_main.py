@@ -1,4 +1,5 @@
 from unittest import TestCase
+import unittest
 import csv
 from algo.RandomAlgorithm import RandomAlgorithm
 from algo.GreedyAlgorithm import GreedyAlgorithm
@@ -28,6 +29,7 @@ class Test(TestCase):
         mcts_algorithm_instance = MCTSAlgorithm()
         mcts_algorithm_instance.execute_with_empty_cell_heuristic()
 
+    @unittest.skip
     def test_generate_eval_score_random_for_100_runs(self):
         header_list = ["Run Id", "Score"]
         evaluation_list = [header_list]
@@ -41,6 +43,7 @@ class Test(TestCase):
             writer = csv.writer(file)
             writer.writerows(evaluation_list)
 
+    @unittest.skip
     def test_expectiminimax_new(self):
         expecti_minimax_algorithm_instance = ExpectiMinimaxAlgorithm()
         expecti_minimax_algorithm_instance.execute()
