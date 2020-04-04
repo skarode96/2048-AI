@@ -13,7 +13,7 @@ MERGE_FUNCTIONS = {
 def get_moves(board):
     results = []
     for move, action in MERGE_FUNCTIONS.items():
-        tempBoard, _, _, _ = action(board)
+        tempBoard, _, _, _, _ = action(board)
         result = move, expectiminmax_search(tempBoard, 4)
         results.append(result)
     return results
@@ -40,7 +40,7 @@ def expectiminmax_search(board, depth, move=False):
     alpha = evaluation(board)
     if move:
         for _, action in MERGE_FUNCTIONS.items():
-            child, _, _, _ = action(board)
+            child, _, _, _, _ = action(board)
             alpha = max(alpha, expectiminmax_search(child, depth - 1))
     else:
         alpha = 0

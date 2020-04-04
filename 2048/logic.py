@@ -158,6 +158,16 @@ def get_empty_cells(mat):
     return count
 
 
+def get_weighted_cell_score(mat):
+    weighted_score = 0
+    weight_matrix = [[7, 6, 5, 4], [6, 5, 4, 3], [5, 4, 3, 2], [4, 3, 2, 1]]
+    for i in range(4):
+        for j in range(4):
+            if mat[i][j] == 0:
+                weighted_score += mat[i][j]*weight_matrix[i][j]
+
+    return weighted_score
+
 def merge(mat):
     done = False
     local_score = 0
@@ -169,49 +179,50 @@ def merge(mat):
                 mat[i][j + 1] = 0
                 done = True
     empty_cells_count = get_empty_cells(mat)
-    return mat, done, local_score, empty_cells_count
+    weighted_cell_score = get_weighted_cell_score(mat)
+    return mat, done, local_score, empty_cells_count, weighted_cell_score
 
 
 def up(game):
     # return matrix after shifting up
     game = transpose(game)
     game, d = cover_up(game)
-    mat, done, local_score, empty_cells_count = merge(game)
+    mat, done, local_score, empty_cells_count, weighted_cell_score = merge(game)
     game = mat
     done = d or done
     game = cover_up(game)[0]
     game = transpose(game)
-    return game, done, local_score, empty_cells_count
+    return game, done, local_score, empty_cells_count, weighted_cell_score
 
 
 def down(game):
     game = reverse(transpose(game))
     game, d = cover_up(game)
-    mat, done, local_score, empty_cells_count = merge(game)
+    mat, done, local_score, empty_cells_count, weighted_cell_score = merge(game)
     game = mat
     done = done or d
     game = cover_up(game)[0]
     game = transpose(reverse(game))
-    return game, done, local_score, empty_cells_count
+    return game, done, local_score, empty_cells_count, weighted_cell_score
 
 
 def left(game):
     # return matrix after shifting left
     game, d = cover_up(game)
-    mat, done, local_score, empty_cells_count = merge(game)
+    mat, done, local_score, empty_cells_count, weighted_cell_score = merge(game)
     game = mat
     done = done or d
     game = cover_up(game)[0]
-    return game, done, local_score, empty_cells_count
+    return game, done, local_score, empty_cells_count, weighted_cell_score
 
 
 def right(game):
     # return matrix after shifting right
     game = reverse(game)
     game, d = cover_up(game)
-    game, done, local_score, empty_cells_count = merge(game)
+    game, done, local_score, empty_cells_count, weighted_cell_score = merge(game)
     game = game
     done = done or d
     game = cover_up(game)[0]
     game = reverse(game)
-    return game, done, local_score, empty_cells_count
+    return game, done, local_score, empty_cells_count, weighted_cell_score
