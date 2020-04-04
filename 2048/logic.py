@@ -148,6 +148,16 @@ def cover_up(mat):
     return new, done
 
 
+def get_empty_cells(mat):
+    count = 0
+    for i in range(4):
+        for j in range(4):
+            if mat[i][j] == 0:
+                count += 1
+
+    return count
+
+
 def merge(mat):
     done = False
     local_score = 0
@@ -158,49 +168,50 @@ def merge(mat):
                 local_score += mat[i][j]
                 mat[i][j + 1] = 0
                 done = True
-    return mat, done, local_score
+    empty_cells_count = get_empty_cells(mat)
+    return mat, done, local_score, empty_cells_count
 
 
 def up(game):
     # return matrix after shifting up
     game = transpose(game)
     game, d = cover_up(game)
-    mat, done, local_score = merge(game)
+    mat, done, local_score, empty_cells_count = merge(game)
     game = mat
     done = d or done
     game = cover_up(game)[0]
     game = transpose(game)
-    return game, done, local_score
+    return game, done, local_score, empty_cells_count
 
 
 def down(game):
     game = reverse(transpose(game))
     game, d = cover_up(game)
-    mat, done, local_score = merge(game)
+    mat, done, local_score, empty_cells_count = merge(game)
     game = mat
     done = done or d
     game = cover_up(game)[0]
     game = transpose(reverse(game))
-    return game, done, local_score
+    return game, done, local_score, empty_cells_count
 
 
 def left(game):
     # return matrix after shifting left
     game, d = cover_up(game)
-    mat, done, local_score = merge(game)
+    mat, done, local_score, empty_cells_count = merge(game)
     game = mat
     done = done or d
     game = cover_up(game)[0]
-    return game, done, local_score
+    return game, done, local_score, empty_cells_count
 
 
 def right(game):
     # return matrix after shifting right
     game = reverse(game)
     game, d = cover_up(game)
-    game, done, local_score = merge(game)
+    game, done, local_score, empty_cells_count = merge(game)
     game = game
     done = done or d
     game = cover_up(game)[0]
     game = reverse(game)
-    return game, done, local_score
+    return game, done, local_score, empty_cells_count

@@ -130,7 +130,7 @@ class GameGrid(Frame):
             self.update_grid_cells()
             print('back on step total step:', len(self.history_matrixs))
         elif key in self.commands:
-            self.matrix, done, local_score = self.commands[repr(event.char)](self.matrix)
+            self.matrix, done, local_score,empty_cells_count = self.commands[repr(event.char)](self.matrix)
             self.score += local_score
             if done:
                 self.matrix = logic.add_two(self.matrix)
@@ -158,7 +158,7 @@ class GameGrid(Frame):
 
     def play_move(self, move):
         if self.move_exists(self.matrix) or self.move_exists(zip(*self.matrix)):
-            self.matrix, _, local_score = expectiminmax.MERGE_FUNCTIONS[move](self.matrix)
+            self.matrix, _, local_score, _ = expectiminmax.MERGE_FUNCTIONS[move](self.matrix)
             self.score += local_score
             return self.generate_tiles()
 
