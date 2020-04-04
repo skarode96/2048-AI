@@ -1,5 +1,5 @@
 import random
-import logic
+from game import logic
 from tkinter import Frame, Label, CENTER
 import itertools
 import expectiminmax

@@ -1,22 +1,33 @@
 from unittest import TestCase
-import main
+from game import main
 import csv
+from algo.RandomAlgorithm import RandomAlgorithm
+from algo.GreedyAlgorithm import GreedyAlgorithm
+from algo.MCTSAlgorithm import MCTSAlgorithm
+from algo.ExpectiMinimaxAlgorithm import ExpectiMinimaxAlgorithm
+
 
 class Test(TestCase):
-    def test_random_algo(self):
-        main.random_algo()
 
-    def test_greedy_algo(self):
-        main.greedy_algo()
+    def test_random_algo(self):
+        random_algorithm_instance = RandomAlgorithm()
+        random_algorithm_instance.execute()
+
+    def test_greedy_algo_basic(self):
+        greedy_algorithm_instance = GreedyAlgorithm()
+        greedy_algorithm_instance.execute_with_basic_heuristic()
 
     def test_greedy_algo_with_empty_cell_heuristics(self):
-        main.greedy_algo_with_empty_cell_heuristics()
+        greedy_algorithm_instance = GreedyAlgorithm()
+        greedy_algorithm_instance.execute_with_empty_cell_heuristic()
 
-    def test_mcts_algo(self):
-        main.mcts_algo()
+    def test_mcts_algo_basic(self):
+        mcts_algorithm_instance = MCTSAlgorithm()
+        mcts_algorithm_instance.execute_with_basic_heuristic()
 
     def test_mcts_algo_with_empty_cell_heuristics(self):
-        main.mcts_algo_with_empty_cell_heuristics()
+        mcts_algorithm_instance = MCTSAlgorithm()
+        mcts_algorithm_instance.execute_with_empty_cell_heuristic()
 
     def test_generate_eval_score_random_for_100_runs(self):
         header_list = ["Run Id", "Score"]
@@ -30,8 +41,6 @@ class Test(TestCase):
             writer = csv.writer(file)
             writer.writerows(evaluation_list)
 
-
-
-
-    def test_expectiminmax_algo(self):
-        main.expectiminimax_algo()
+    def test_expectiminimax_new(self):
+        expecti_minimax_algorithm_instance = ExpectiMinimaxAlgorithm()
+        expecti_minimax_algorithm_instance.execute()

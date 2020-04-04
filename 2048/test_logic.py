@@ -1,5 +1,5 @@
 from unittest import TestCase
-import logic
+from game import logic
 
 class Test(TestCase):
     def test_cover_up(self):

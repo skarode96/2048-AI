@@ -1,5 +1,5 @@
-import puzzle
-import logic
+from game import puzzle
+from game import logic
 import random
 import time
 import math

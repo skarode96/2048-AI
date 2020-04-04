@@ -40,3 +40,8 @@ KEY_J = "'j'"
 KEY_K = "'k'"
 KEY_L = "'l'"
 KEY_H = "'h'"
+
+MCT_SEARCH_DEPTH = 300
+Alpha = 0.0
+Beta = 1
+K = 1

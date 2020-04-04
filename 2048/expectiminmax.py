@@ -1,6 +1,6 @@
 import math
 import itertools
-import logic
+from game import logic
 
 MERGE_FUNCTIONS = {
     '<<LEFT>>': logic.left,
