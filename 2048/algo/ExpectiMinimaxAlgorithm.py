@@ -37,6 +37,7 @@ class ExpectiMinimaxAlgorithm:
                     move_location = index
             move = moves_list[move_location][0]
             # Play given move and Checks if we can add more tiles: if not then game over
+            print(board.matrix)
             if not board.play_move(move):
                 print("Game Over")
                 max_tile = -float("inf")

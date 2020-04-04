@@ -1,9 +1,9 @@
-from game import puzzle
-import time
-import random
 import csv
-from utils.GameUtils import GameUtils
+import time
 import constants as c
+from utils.GameUtils import GameUtils
+
+from game import puzzle
 
 
 class MCTSAlgorithm:

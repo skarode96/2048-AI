@@ -2,7 +2,6 @@ import random
 from game import logic
 from tkinter import Frame, Label, CENTER
 import itertools
-import expectiminmax
 import constants as c
 
 

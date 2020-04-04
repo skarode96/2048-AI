@@ -15,14 +15,14 @@ class RandomAlgorithm:
         evaluation_list.append(header_list)
         moves_count = 0
         for i in range(400):
-            self.gamegrid.master.event_generate(GameUtils.get_random_move_name())
+            self.gamegrid.master.event_generate(GameUtils().get_random_move_name())
             time.sleep(0.01)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)
-        with open('../../evaluations/random_play_scores.csv', 'w', newline='') as file:
+        with open('../evaluations/random_play_scores.csv', 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(evaluation_list)
-        print("Algorithm: random ==> final Score ==> " + str(gamegrid.score))
+        print("Algorithm: random ==> final Score ==> " + str(self.gamegrid.score))
         self.gamegrid.master.event_generate("<<QUIT>>")
         return self.gamegrid.score

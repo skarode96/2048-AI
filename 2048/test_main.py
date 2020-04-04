@@ -1,5 +1,4 @@
 from unittest import TestCase
-from game import main
 import csv
 from algo.RandomAlgorithm import RandomAlgorithm
 from algo.GreedyAlgorithm import GreedyAlgorithm
@@ -33,7 +32,8 @@ class Test(TestCase):
         header_list = ["Run Id", "Score"]
         evaluation_list = [header_list]
         for i in range(20):
-            score = main.random_algo()
+            random_algorithm_instance = RandomAlgorithm()
+            score = random_algorithm_instance.execute()
             evaluation_row = [i, score]
             evaluation_list.append(evaluation_row)
 
