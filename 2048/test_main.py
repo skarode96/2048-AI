@@ -6,7 +6,6 @@ from algo.GreedyAlgorithm import GreedyAlgorithm
 from algo.MCTSAlgorithm import MCTSAlgorithm
 from algo.ExpectiMinimaxAlgorithm import ExpectiMinimaxAlgorithm
 
-
 class Test(TestCase):
 
     def test_random_algo(self):
@@ -18,8 +17,12 @@ class Test(TestCase):
         greedy_algorithm_instance.execute_with_basic_heuristic()
 
     def test_greedy_algo_with_empty_cell_heuristics(self):
-        greedy_algorithm_instance = GreedyAlgorithm()
+        greedy_algorithm_instance = GreedyAlgorithm(alpha=0.0, beta=1, gamma=0, k=1)
         greedy_algorithm_instance.execute_with_empty_cell_heuristic()
+
+    def test_greedy_algo_with_weighted_cell_heuristics(self):
+        greedy_algorithm_instance = GreedyAlgorithm(alpha=0, beta=0, gamma=1, k=1)
+        greedy_algorithm_instance.execute_with_weighted_cell_heuristic()
 
     def test_mcts_algo_basic(self):
         mcts_algorithm_instance = MCTSAlgorithm()
