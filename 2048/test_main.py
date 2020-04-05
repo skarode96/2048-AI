@@ -29,8 +29,12 @@ class Test(TestCase):
         mcts_algorithm_instance.execute_with_basic_heuristic()
 
     def test_mcts_algo_with_empty_cell_heuristics(self):
-        mcts_algorithm_instance = MCTSAlgorithm()
+        mcts_algorithm_instance = MCTSAlgorithm(alpha=0.0, beta=1, gamma=0, k=1)
         mcts_algorithm_instance.execute_with_empty_cell_heuristic()
+
+    def test_mcts_algo_with_weighted_cell_heuristics(self):
+        mcts_algorithm_instance = MCTSAlgorithm(alpha=0, beta=0, gamma=1, k=1)
+        mcts_algorithm_instance.execute_with_weighted_cell_heuristic()
 
     @unittest.skip
     def test_generate_eval_score_random_for_100_runs(self):

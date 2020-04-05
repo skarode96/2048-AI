@@ -16,7 +16,7 @@ class RandomAlgorithm:
         moves_count = 0
         for i in range(400):
             self.gamegrid.master.event_generate(GameUtils().get_random_move_name())
-            time.sleep(0.01)
+            time.sleep(0.001)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)

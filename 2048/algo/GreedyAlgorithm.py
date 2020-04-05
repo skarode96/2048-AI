@@ -10,9 +10,6 @@ Alpha = 0.0
 Beta = 1
 K = 1
 class GreedyAlgorithm:
-    alpha = 0
-    beta = 0
-    k = 0
 
     def __init__(self, alpha=0.0, beta=0.0, gamma=0.0,  k=1):
         self.name = "GreedyAlgorithm"
@@ -71,7 +68,7 @@ class GreedyAlgorithm:
             if sum(scores) == 0:  # if all the moves are same then choose random move to move things ahead
                 max_score_action_index = random.randint(0, 3)
             self.gamegrid.master.event_generate(GameUtils.actions_name_dict[max_score_action_index])
-            time.sleep(0.01)
+            time.sleep(0.001)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)
@@ -102,7 +99,7 @@ class GreedyAlgorithm:
             if sum(scores) == 0:  # if all the moves are same then choose random move to move things ahead
                 max_score_action_index = random.randint(0, 3)
             self.gamegrid.master.event_generate(GameUtils.actions_name_dict[max_score_action_index])
-            time.sleep(0.01)
+            time.sleep(0.001)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)
