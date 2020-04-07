@@ -8,7 +8,7 @@ from game import puzzle
 class MCTSAlgorithm:
     def __init__(self, alpha=0.0, beta=0.0, gamma=0.0,  k=1):
         self.name = "MCTSAlgorithm"
-        self.MCT_SEARCH_DEPTH = 1000
+        self.MCT_SEARCH_DEPTH = 300
         self.gamegrid = puzzle.GameGrid()
         self.alpha = alpha
         self.beta = beta
@@ -40,7 +40,7 @@ class MCTSAlgorithm:
             evaluation_row.append(self.gamegrid.score)
             evaluation_list.append(evaluation_row)
         self.gamegrid.master.event_generate("<<QUIT>>")
-        with open('../evaluations/mcts_scores.csv', 'w', newline='') as file:
+        with open('../evaluations/mcts_basic_scores.csv', 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(evaluation_list)
         print("Algorithm: MCTS ==> final Score ==> " + str(self.gamegrid.score))
@@ -72,7 +72,6 @@ class MCTSAlgorithm:
 
             max_heuristic_index = heuristics.index(max(heuristics))
             self.gamegrid.master.event_generate(GameUtils.actions_name_dict[max_heuristic_index])
-            time.sleep(0.001)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)
@@ -98,7 +97,6 @@ class MCTSAlgorithm:
 
             max_heuristic_index = heuristics.index(max(heuristics))
             self.gamegrid.master.event_generate(GameUtils.actions_name_dict[max_heuristic_index])
-            time.sleep(0.001)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)

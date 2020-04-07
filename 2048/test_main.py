@@ -91,6 +91,50 @@ class Test(TestCase):
             writer.writerows(evaluation_list)
 
     @unittest.skip
+    def test_generate_eval_score_mcts_basic_for_100_runs(self):
+        header_list = ["Run Id", "Score"]
+        evaluation_list = [header_list]
+        for i in range(100):
+            mcts_algorithm_instance = MCTSAlgorithm()
+            score = mcts_algorithm_instance.execute_with_basic_heuristic()
+            evaluation_row = [i, score]
+            evaluation_list.append(evaluation_row)
+
+        with open('../evaluations/avg_run_evaluation/100_run_scores_mcts_algo_basic.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(evaluation_list)
+
+    @unittest.skip
+    def test_generate_eval_score_mcts_empty_cell_for_100_runs(self):
+        header_list = ["Run Id", "Score"]
+        evaluation_list = [header_list]
+        for i in range(100):
+            mcts_algorithm_instance = MCTSAlgorithm(alpha=0.0, beta=1, gamma=0, k=1)
+            score = mcts_algorithm_instance.execute_with_empty_cell_heuristic()
+            evaluation_row = [i, score]
+            evaluation_list.append(evaluation_row)
+
+        with open('../evaluations/avg_run_evaluation/100_run_scores_mcts_algo_empty_cell_heuristics.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(evaluation_list)
+
+    @unittest.skip
+    def test_generate_eval_score_mcts_weighted_cell_for_100_runs(self):
+        header_list = ["Run Id", "Score"]
+        evaluation_list = [header_list]
+        for i in range(100):
+            mcts_algorithm_instance = MCTSAlgorithm(alpha=0, beta=0, gamma=1, k=1)
+            score = mcts_algorithm_instance.execute_with_weighted_cell_heuristic()
+            evaluation_row = [i, score]
+            evaluation_list.append(evaluation_row)
+
+        with open('../evaluations/avg_run_evaluation/100_run_scores_mcts_algo_weighted_cell_heuristics.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(evaluation_list)
+
+
+
+    @unittest.skip
     def test_expectiminimax_new(self):
         expecti_minimax_algorithm_instance = ExpectiMinimaxAlgorithm()
         expecti_minimax_algorithm_instance.execute()
