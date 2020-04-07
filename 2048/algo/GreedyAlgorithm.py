@@ -38,11 +38,10 @@ class GreedyAlgorithm:
             if sum(scores) == 0:  # if all the moves are leading to 0 then choose random move to move things ahead
                 max_score_action_index = random.randint(0, 3)
             self.gamegrid.master.event_generate(GameUtils.actions_name_dict[max_score_action_index])
-            time.sleep(0.001)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)
-        with open('../evaluations/greedy_scores.csv', 'w', newline='') as file:
+        with open('../evaluations/greedy_scores_basic.csv', 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(evaluation_list)
         print("Algorithm: greedy basic ==> final Score ==> " + str(self.gamegrid.score))
@@ -68,7 +67,6 @@ class GreedyAlgorithm:
             if sum(scores) == 0:  # if all the moves are same then choose random move to move things ahead
                 max_score_action_index = random.randint(0, 3)
             self.gamegrid.master.event_generate(GameUtils.actions_name_dict[max_score_action_index])
-            time.sleep(0.001)
             moves_count += 1
             evaluation_row = [moves_count, self.gamegrid.score]
             evaluation_list.append(evaluation_row)
