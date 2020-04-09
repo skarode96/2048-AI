@@ -2,7 +2,7 @@
 This project is completed and submitted as a part of CS7IS2 Module Coursework assignment.
 It consist of implementation and analysis of various algorithms implemented for solving 2048 game problem.
 
-##Setting up the environment 2048
+## Setting up the environment 2048
 
 * Install python3-tk package for GUI
 ```
