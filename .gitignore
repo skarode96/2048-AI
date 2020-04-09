@@ -6,3 +6,5 @@ venv
 2048/__pycache__/*
 .idea
 .ipynb_checkpoints
+.DS_Store
+.vscode

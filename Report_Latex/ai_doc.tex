@@ -1,0 +1,147 @@
+\documentclass{svproc}
+\usepackage{url}
+\usepackage{cite}
+\def\UrlFont{\rmfamily}
+\UseRawInputEncoding
+
+\begin{document}
+    \mainmatter
+    \title{Analysis of Artificial Intelligence Strategies\\On The Game 2048
+    }
+    \subtitle{CS7IS2 Project (2019/2020)}
+    \author{Rohan Anand, Rohan Bagwe, Sameer Karode, Kavithvajen Kamaraj}
+
+    \institute{Trinity College Dublin \newline
+        \email{anandr@tcd.ie}, \email{}, \email{karodes@tcd.ie}, \email{kamarajk@tcd.ie}}
+
+    \maketitle
+
+    \begin{abstract}
+        Video games and puzzle problems have become popular when researching reinforcement learning techniques in Artificial Intelligence. In our paper, we analyze the performance of multiple agents in 2048, a popular puzzle-like game. These agents are trained using Monte-Carlo search, Expectimax, and Q-learning. The results of these experiments indicate that BLANK method works best for this game. This could be due to ... (reasoning to be given later)
+        \keywords{artificial intelligence, gaming, reinforcement learning}
+    \end{abstract}
+%
+
+% This document is a guideline for writing the final report for the CS7IS2 module Artificial Intelligence. You should follow its general structure as shown below.
+% You should not change its format (font, size, margin, space, etc.).
+% Your report should be between five and ten pages. Report that not comply to the format or exceed the maximum length will be penalised (-5 marks).
+% Brevity is desirable in communication, however you should provide all those details necessary for the good understanding of the described methods and algorithms.
+% The report will be graded on the basis of:
+% \begin{itemize}
+% \item Originality;
+% \item Technical soundness;
+% \item Organisation;
+% \item Clarity of presentation;
+% \item Adequacy of bibliography/Results (this last point strongly depends on the type of report)
+% \end{itemize}
+
+% \begin{description}
+    Your report should provide a survey and an experimental comparison of multiple solution approaches to a particular problem. This is a critical review of at least three papers that significantly contributed to advance the state-of-the-art for the problem you are analysing. It should not be a mere summary of the papers. You are expected to conduct an analytical review of the methods under analysis to try to find common aspect and differences, connections between methods, drawbacks and open problems. Unless the faced problem has emerged recently, students should choose their papers by diversifying the range of approaches used to solve the problem. A good guideline could be to choose a paper from a decade or two ago, and a couple of more recent papers. You need to experimentally evaluate approaches in a simulation of a problem, in a range of scenarios, and analyse the pros and cons of each approach.
+% \end{description}
+
+    \section{Introduction}
+    In this section, you should introduce your work: what are the motivations behind this work? What is the relevant problem that you are investigating? Why is it relevant?
+    Briefly, introduce the background information required to understand the problem and the concepts that you will develop.
+
+    - Games have been important in research in Artificial Intelligence, especially in the area of reinforcement learning. (Why?)
+    - Deepmind winning chess, go, shoji
+    - Starcraft, DOTA AIs
+
+    - Many reinforcement learning algorithms have been tested using games such as atari. (Talk about these researches)
+    In this paper we take a look at reinforcement learning for the game 2048. The goal of the game is to form a block with the highest number possible. 
+    - We implement 3 algorithms on the game environment: (Name the algos). The relative performance of these algorithms is then measured and evaluated.
+
+
+    \section{Related Work}
+    In this section you will discuss possible approaches to solve the problem you are addressing, justifying your choice of the 3 you have selected to evaluate. Also, briefly introduce the approaches you are evaluating with a specific emphasis on differences and similarities to the proposed approach(es).
+
+    \section{Problem Definition and Algorithm}
+%    This section formalises the problem you are addressing and the models used to solve it. This section should provide a technical discussion of the chosen/implemented algorithms. A pseudocode description of the algorithm(s) can also be beneficial to a clear explanation. It is also possible to provide one example that clarifies the way an algorithm works. It is important to highlight in this section the possible parameters involved in the model and their impact, as well as all the implementation choices that can impact the algorithm.
+   
+  	% @kavith
+  	% What is 2048. What are we trying to achieve.
+	 
+	2048 is a non-deterministic, single-player game that was developed by a 19-year old web developer named Gabriele Cirulli. The game was released to the public in 2014 as a free and open-source software, and it quickly became the most popular game in the market when mobile versions of the game were released \cite{wiki_2048}. The game is interesting due to its simple controls and yet hard to master gameplay. One cannot simply win a game of 2048 by making random moves unless they’re very lucky. The game requires the player to have some sort of intelligence and an ability to look ahead of moves to determine what would lead them to go on and win the game, thus making it a perfect problem for an AI agent to solve. Also, 2048 can be clearly shown as a Markov Decision Process and that provides an ideal platform to compare and contrast different AI reinforcement learning techniques \cite{jaskowski, pedagogy}.
+
+	The 2048 game is played on a 4x4 grid where numbered tiles are present. The game randomly generated tiles with the numbers 2 and 4 after every move the player makes. The goal is to sum up similar tiles with one another until 2048 is reached in at least one tile. An example would be to add two tiles with the values 2 and they’d add up to become one tile with the value 4, now this tile with the value 4 must be added up with another tile with the value 4 to form a single tile with value 8, this goes on until two 8s are added to form 16 and so on until 2048 is reached. The rules of the game are very easy to understand but playing the game smartly in a constrained 4x4 grid is what is challenging about this game. The tiles are added by moving them either up, down, left or right and when one of the moves are performed all the tiles in the grid move in the specified direction. There is another element involved in this game and that is the score, it starts off at zero and as the player makes moves, it is updated based on the value of the new tiles that are formed due to the combination of previous tiles (i.e., if two tiles with the value of 128 are combined, then the resulting tile will have the value of 256 and thus the score will also increment by 256 points). A player wins when they obtain a tile with the value 2048, but the game does not end then and the users can continue the game to reach higher scores like 4096 and so on. The player is considered to have lost when all the tiles in the grid have a value and a move cannot be made to combine any of them.
+
+	This project aims to demonstrate how various Reinforcement Learning algorithms perform while trying to win a game of 2048. Five algorithms were chosen for this purpose and they are:
+
+	\begin{itemize}
+
+		\item Random Algorithm
+		\item Greedy Algorithm
+		\item Expectiminimax  
+		\item Monte-Carlo Tree Search 
+		\item Q-learning
+
+	\end{itemize}
+    
+
+    \subsection{Environment}
+    
+    \subsection{Algorithms}
+    	%mention pseudo codes
+    	\subsubsection{Random Algorithm}
+    
+    	\subsubsection{Greedy Algorithm}
+    
+	\subsubsection{Expecti minimax}    
+    
+    	\subsubsection{Monte-Carlo Tree Search}
+    	
+    	(MCTS) is a heuristic search algorithm that is widely used to solve Reinforcement Learning problems. Hence, MCTS can find its own moves and explore the environment on its own by randomly playing different moves \cite{mcts_comparison}. In MCTS, each of the following steps are sequentially followed in an iterative manner to learn the policy of the problem at stake \cite{mcts_medium}:
+	
+	\begin{itemize}
+	
+		\item \textbf{\underline{Selection:}} In this step a leaf node from the tree which has the highest probability of maximising the value is selected accordingly. The chosen node is usually in the current representation of the tree and this current representation is not always the complete version, as most of the times the entire environment is not explored in one go. 
+		\newline
+		\item \textbf{\underline{Expansion:}} Now the selected node is expanded and therefore one or more child nodes are added to the tree. These newly added child nodes indicate future moves that can be played later.
+		\newline
+		\item \textbf{\underline{Play-out:}} In the play-out step, a random play is performed starting from a child node that was 	added during the expansion step. The play is done until a terminal state is reached in the game or until a fixed depth is reached. Based on the results of the random explorations, each of the child nodes that was expanded is given a reward. The reward is based on how close the final state reached by the exploration was to the favoured state.
+		\newline
+		\item \textbf{\underline{Backpropagation:}} Based on the results obtained at the child nodes, the tree is then traversed back through all the parent nodes while updating their statistics about the moves that could be followed to reach a terminal state. All the parent nodes including the root node is updated with the new values. Now with this new knowledge, the next time an exploitation is required to be done, the most optimal path is chosen based on the current knowledge of the tree. \\
+	
+    	 Some of the key properties of MCTS are \cite{mcts_keyProps}:\\
+	
+		\begin{itemize}
+	
+			\item The search can be performed iteratively for any number of times and yet when it comes to exploitation, a relatively optimal path will be present. Generally, the longer the exploration is performed, the better the final result.
+	
+			\item An evaluation function is not required as the random nature of the play-out step ensures no moves are ruled out and the relatively optimal path is always known in the tree.
+	
+			\item The search develops asymmetric trees that prunes sub-optimal paths automatically and can thus look for more optimal paths that could arrive deeper down the tree.
+			
+		\end{itemize}
+    
+    	\end{itemize}
+    
+    	\subsubsection{Q Learning}
+
+    \section{Experimental Results}
+    This section should provide the details of the evaluation. Specifically:
+    \begin{itemize}
+        \item Methodology: describe the evaluation criteria, the data used during the evaluation, and the methodology followed to perform the evaluation.
+        \item Results: present the results of the experimental evaluation. Graphical data and tables are two common ways to present the results. Also, a comparison with a baseline should be provided.
+        \item Discussion: discuss the implication of the results of the proposed algorithms/models. What are the weakness/strengths of the method(s) compared with the other methods/baseline?
+    \end{itemize}
+    	
+    	% @rohanAnand
+		\subsection{Methodology}
+		 - Number of moves
+		 - Time
+		 - Max score reached
+		 
+		\subsection{Results}
+		
+		\subsection{Interpretations}
+			- of results. Why something performed better ...
+    \section{Conclusions}
+    Provide a final discussion of the main results and conclusions of the report. Comment on the lesson learnt and possible improvements.
+
+
+
+    \bibliography{ai_doc}
+    \bibliographystyle{ieeetr}
+    
+\end{document}
