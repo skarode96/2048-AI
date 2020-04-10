@@ -11,7 +11,7 @@ class Event:
 
 
 class GameGrid(Frame):
-    def __init__(self, param = None, expectiminmax=False):
+    def __init__(self, param = None, expectimax=False):
         Frame.__init__(self)
 
         self.grid()
@@ -35,7 +35,7 @@ class GameGrid(Frame):
         self.grid_cells = []
         self.init_score()
         self.init_grid()
-        self.is_expectiminmax = expectiminmax
+        self.is_expectimexpectimaxax = expectimax
         self.init_matrix(param)
         self.update_grid_cells()
         # self.mainloop()
@@ -78,7 +78,7 @@ class GameGrid(Frame):
             self.history_matrixs = list()
             self.matrix = logic.add_two(self.matrix)
             self.matrix = logic.add_two(self.matrix)
-        elif self.is_expectiminmax is True:
+        elif self.is_expectimax is True:
             self.matrix = [[0] * 4 for _ in range(4)]
             self.history_matrixs = list()
             # Generate 2 tiles when the game begins

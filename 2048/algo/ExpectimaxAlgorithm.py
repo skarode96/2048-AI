@@ -7,9 +7,9 @@ import math
 import itertools
 
 
-class ExpectiMinimaxAlgorithm:
+class ExpectimaxAlgorithm:
     def __init__(self):
-        self.name = "ExpectiMinimaxAlgorithm"
+        self.name = "ExpectimaxAlgorithm"
         self.MERGE_FUNCTIONS = {
             '<<LEFT>>': logic.left,
             '<<RIGHT>>': logic.right,
@@ -20,7 +20,7 @@ class ExpectiMinimaxAlgorithm:
     def execute(self):
         start_time = time.time()
         moves_count = 0
-        board = puzzle.GameGrid(expectiminmax=True)
+        board = puzzle.GameGrid(expectimax=True)
         evaluation_list = []
         header_list = ["Move", "Score"]
         evaluation_list.append(header_list)
@@ -49,8 +49,8 @@ class ExpectiMinimaxAlgorithm:
                 print("Highest Tile is ", max_tile)
                 board.update_grid_cells()
                 print(
-                    "--- Total Execution Time Expectiminimax in minutes: %s ---" % ((time.time() - start_time) / 60.0))
-                with open('../../evaluations/expectiminmax_scores.csv', 'w', newline='') as file:
+                    "--- Total Execution Time Expectimax in minutes: %s ---" % ((time.time() - start_time) / 60.0))
+                with open('../../evaluations/expectimax_scores.csv', 'w', newline='') as file:
                     writer = csv.writer(file)
                     writer.writerows(evaluation_list)
                 break
@@ -64,7 +64,7 @@ class ExpectiMinimaxAlgorithm:
         results = []
         for move, action in self.MERGE_FUNCTIONS.items():
             tempBoard, _, _, _, _ = action(board)
-            result = move, self.expectiminmax_search(tempBoard, 4)
+            result = move, self.expectimax_search(tempBoard, 4)
             results.append(result)
         return results
 
@@ -81,7 +81,7 @@ class ExpectiMinimaxAlgorithm:
         return sum(x / 10 ** n for n, x in enumerate(flattened_board)) - math.pow(
             (board[3][0] != m) * abs(board[3][0] - m), 2)
 
-    def expectiminmax_search(self, board, depth, move=False):
+    def expectimax_search(self, board, depth, move=False):
 
         if depth == 0 or (move and not self.move_exists(board)):
             return self.evaluation(board)
@@ -90,7 +90,7 @@ class ExpectiMinimaxAlgorithm:
         if move:
             for _, action in self.MERGE_FUNCTIONS.items():
                 child, _, _, _, _ = action(board)
-                alpha = max(alpha, self.expectiminmax_search(child, depth - 1))
+                alpha = max(alpha, self.expectimax_search(child, depth - 1))
         else:
             alpha = 0
             zeros = [(i, j) for i, j in itertools.product(range(4), range(4)) if board[i][j] == 0]
@@ -99,8 +99,8 @@ class ExpectiMinimaxAlgorithm:
                 c2 = [[x for x in row] for row in board]
                 c1[i][j] = 2
                 c2[i][j] = 4
-                alpha += (0.9 * self.expectiminmax_search(c1, depth - 1, True) / len(
-                    zeros) + 0.1 * self.expectiminmax_search(c2, depth - 1, True) / len(zeros))
+                alpha += (0.9 * self.expectimax_search(c1, depth - 1, True) / len(
+                    zeros) + 0.1 * self.expectimax_search(c2, depth - 1, True) / len(zeros))
         return alpha
 
     def move_exists(self, board):

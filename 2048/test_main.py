@@ -4,7 +4,7 @@ import csv
 from algo.RandomAlgorithm import RandomAlgorithm
 from algo.GreedyAlgorithm import GreedyAlgorithm
 from algo.MCTSAlgorithm import MCTSAlgorithm
-from algo.ExpectiMinimaxAlgorithm import ExpectiMinimaxAlgorithm
+from algo.ExpectimaxAlgorithm import ExpectimaxAlgorithm
 
 class Test(TestCase):
 
@@ -135,6 +135,6 @@ class Test(TestCase):
 
 
     @unittest.skip
-    def test_expectiminimax_new(self):
-        expecti_minimax_algorithm_instance = ExpectiMinimaxAlgorithm()
-        expecti_minimax_algorithm_instance.execute()
+    def test_expectimax_new(self):
+        expecti_max_algorithm_instance = ExpectimaxAlgorithm()
+        expecti_max_algorithm_instance.execute()
