@@ -1,6 +1,8 @@
 \documentclass{svproc}
 \usepackage{url}
 \usepackage{cite}
+\usepackage{citep}
+\usepackage[ruled,vlined]{algorithm2e}
 \def\UrlFont{\rmfamily}
 
 
@@ -20,24 +22,6 @@
         Video games and puzzle problems have become popular when researching reinforcement learning techniques in Artificial Intelligence. In our paper, we analyze the performance of multiple agents in 2048, a popular puzzle-like game. These agents are trained using Monte-Carlo search, Expectimax, and Q-learning. The results of these experiments indicate that BLANK method works best for this game. This could be due to ... (reasoning to be given later)
         \keywords{artificial intelligence, gaming, reinforcement learning}
     \end{abstract}
-%
-
-% This document is a guideline for writing the final report for the CS7IS2 module Artificial Intelligence. You should follow its general structure as shown below.
-% You should not change its format (font, size, margin, space, etc.).
-% Your report should be between five and ten pages. Report that not comply to the format or exceed the maximum length will be penalised (-5 marks).
-% Brevity is desirable in communication, however you should provide all those details necessary for the good understanding of the described methods and algorithms.
-% The report will be graded on the basis of:
-% \begin{itemize}
-% \item Originality;
-% \item Technical soundness;
-% \item Organisation;
-% \item Clarity of presentation;
-% \item Adequacy of bibliography/Results (this last point strongly depends on the type of report)
-% \end{itemize}
-
-% \begin{description}
-    Your report should provide a survey and an experimental comparison of multiple solution approaches to a particular problem. This is a critical review of at least three papers that significantly contributed to advance the state-of-the-art for the problem you are analysing. It should not be a mere summary of the papers. You are expected to conduct an analytical review of the methods under analysis to try to find common aspect and differences, connections between methods, drawbacks and open problems. Unless the faced problem has emerged recently, students should choose their papers by diversifying the range of approaches used to solve the problem. A good guideline could be to choose a paper from a decade or two ago, and a couple of more recent papers. You need to experimentally evaluate approaches in a simulation of a problem, in a range of scenarios, and analyse the pros and cons of each approach.
-% \end{description}
 
     \section{Introduction}
     In this section, you should introduce your work: what are the motivations behind this work? What is the relevant problem that you are investigating? Why is it relevant?
@@ -117,7 +101,26 @@
     	\end{itemize}
     
     	\subsubsection{Q Learning}
-
+    	Q-Learning is a reinforcement learning algorithm \cite{watkins1992q}. A Q-Learning agent makes actions that are outside of the current policy. As such it is considered an 'off-policy' reinforcement learning algorithm. We used Q-learning to experiment with how well reinforcement learning could work with a problem such as 2048. For this we created a Deep Q Network (DQN) based on the works by \cite{dqnGit}. The model is trained using Tensorflow with the architecture as shown in Fig 1.
+				
+		The model was trained with Gamma and Epsilon values of 0.9, and the starting learning rate is set as 0.0005. A RELU activation function was used with an RMSProp optimization function. The Epsilon value is used as a threshold to use greedy approach randomly, hence . After certain intervals, the epsilon value is further reduced. The learning rate also decays exponentially by each episode. The model is trained for 20,000 episodes.
+		
+\begin{algorithm}[H]
+\SetAlgoLined
+ initialize_hyperparameters()
+ 
+ \For{episode in [0,1...,20000]}{
+  
+  \eIf{condition}{
+   instructions1\;
+   instructions2\;
+   }{
+   instructions3\;
+  }
+ }
+ \caption{How to write algorithms}
+\end{algorithm}
+		
     \section{Experimental Results}
     This section should provide the details of the evaluation. Specifically:
     \begin{itemize}
@@ -126,12 +129,8 @@
         \item Discussion: discuss the implication of the results of the proposed algorithms/models. What are the weakness/strengths of the method(s) compared with the other methods/baseline?
     \end{itemize}
     	
-    	% @rohanAnand
 		\subsection{Methodology}
-		 - Number of moves
-		 - Time
-		 - Max score reached
-		 
+		 Each algorithm was evaluated based on the CPU wall time, and the max score reached. Random, Greedy, Expecti minimax and MCTS were further compared based on the number of moves required to reach their scores. For our DQN Agent, we analyze its scores over the number of episodes we trained it for.
 		\subsection{Results}
 		
 		\subsection{Interpretations}
