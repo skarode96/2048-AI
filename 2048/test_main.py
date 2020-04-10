@@ -133,8 +133,21 @@ class Test(TestCase):
             writer.writerows(evaluation_list)
 
 
-
     @unittest.skip
-    def test_expectimax_new(self):
+    def test_expectimax(self):
+        """
+        # Test for 1000 runs
+        header_list = ["Run Id", "Score"]
+        evaluation_list = [header_list]
+        for i in range(100):
+            expecti_max_algorithm_instance = ExpectimaxAlgorithm()
+            score = expecti_max_algorithm_instance.execute()
+            evaluation_row = [i, score]
+            evaluation_list.append(evaluation_row)
+
+        with open('../evaluations/avg_run_evaluation/100_run_scores_expectimax_algo_with_snake_line_heuristics_and_depth_2.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(evaluation_list)
+        """
         expecti_max_algorithm_instance = ExpectimaxAlgorithm()
         expecti_max_algorithm_instance.execute()

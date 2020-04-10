@@ -24,7 +24,7 @@ class ExpectimaxAlgorithm:
         evaluation_list = []
         header_list = ["Move", "Score"]
         evaluation_list.append(header_list)
-        while moves_count < 400:
+        while True:
             # Find all moves with the fitness
             # List of Tuples: moves_list = [(move, finess_value), ...]
             moves_list = self.get_moves(board.matrix)
@@ -50,7 +50,7 @@ class ExpectimaxAlgorithm:
                 board.update_grid_cells()
                 print(
                     "--- Total Execution Time Expectimax in minutes: %s ---" % ((time.time() - start_time) / 60.0))
-                with open('../../evaluations/expectimax_scores.csv', 'w', newline='') as file:
+                with open('../evaluations/expectimax_scores_depth_4.csv', 'w', newline='') as file:
                     writer = csv.writer(file)
                     writer.writerows(evaluation_list)
                 break
@@ -78,8 +78,12 @@ class ExpectimaxAlgorithm:
             flattened_board.extend(reversed(col) if i % 2 == 0 else col)
 
         m = max(flattened_board)
-        return sum(x / 10 ** n for n, x in enumerate(flattened_board)) - math.pow(
-            (board[3][0] != m) * abs(board[3][0] - m), 2)
+        # Added penalty if the max tile from the board is not at the lowest left corner i.e board[3][0] of the board,
+        # Here if the above condition is True (Since, True can also be represented as value 1 in python) then we add
+        # the penalty
+        penalty = math.pow((board[3][0] != m) * abs(board[3][0] - m), 2)
+        weighted_sequence = [x / 10 ** n for n, x in enumerate(flattened_board)]
+        return sum(weighted_sequence) - penalty
 
     def expectimax_search(self, board, depth, move=False):
 
@@ -93,14 +97,18 @@ class ExpectimaxAlgorithm:
                 alpha = max(alpha, self.expectimax_search(child, depth - 1))
         else:
             alpha = 0
+            # Find all possible position of tile insertion: ie. tiles which have 0 in it.
+            # And for each (i,j)th location of zero tile make create two child
+            # c1_expected_2: board with 90% chances of getting 2
+            # c2_expected_4: board with 10% chances of getting 4
             zeros = [(i, j) for i, j in itertools.product(range(4), range(4)) if board[i][j] == 0]
             for i, j in zeros:
-                c1 = [[x for x in row] for row in board]
-                c2 = [[x for x in row] for row in board]
-                c1[i][j] = 2
-                c2[i][j] = 4
-                alpha += (0.9 * self.expectimax_search(c1, depth - 1, True) / len(
-                    zeros) + 0.1 * self.expectimax_search(c2, depth - 1, True) / len(zeros))
+                child1_expected_2 = [[x for x in row] for row in board]
+                child2_expected_4 = [[x for x in row] for row in board]
+                child1_expected_2[i][j] = 2
+                child2_expected_4[i][j] = 4
+                alpha += (0.9 * self.expectimax_search(child1_expected_2, depth - 1, True) / len(zeros)
+                        + 0.1 * self.expectimax_search(child2_expected_4, depth - 1, True) / len(zeros))
         return alpha
 
     def move_exists(self, board):
