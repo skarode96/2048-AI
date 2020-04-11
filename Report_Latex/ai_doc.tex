@@ -227,23 +227,24 @@
 
     \begin{algorithm}[H]
         \SetAlgoLined
-        Const TREE\_SEARCH\_DEPTH = 400\;
+        Const TREE\_SEARCH\_DEPTH\;
         initialize\_gamegrid()\;
-        \While{game\_over != True}{
+        \While{game\_over != True} {
             score\_list = new list()\;
             \For{action in actions}{
-                score = 0\;
-                i = TREE_SEARCH_DEPTH\;
-                \While{i > 0}{
+                scores = gamegrid.play(action);
+                i = TREE\_SEARCH\_DEPTH\;
+                \While{i \leq 0}{
                     random\_move = get\_random\_move()\;
-                    heuristic\_score = get\_
+                    heuristic\_score = get\_heuristic\_score\_for(random\_move)\;
+                    scores.append(heuristic\_score)\;
+                    i = i - 1 \;
                 }
-                score\_for\_action = get\_score\_for\_move(action)\;
-                score\_list.append(score\_for\_action)
+                score\_list.append(average\_of(scores))
             }
             index =  get\_max\_score\_index(score\_list)\;
             max\_score\_move = get\_corresponding\_move\_for(index)\;
-            gamegrid.play(max\_score\_move);
+            gamegrid.play(max\_score\_move)\;
         }
         \caption{Monte Carlo Tree Search Algorithm}
     \end{algorithm}
