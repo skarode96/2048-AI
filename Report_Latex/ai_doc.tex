@@ -241,25 +241,41 @@
 
 
     \subsubsection{Q Learning}
-    Q-Learning is a reinforcement learning algorithm \cite{watkins1992q}. A Q-Learning agent makes actions that are outside of the current policy. As such it is considered an 'off-policy' reinforcement learning algorithm. We used Q-learning to experiment with how well reinforcement learning could work with a problem such as 2048. For this we created a Deep Q Network (DQN) based on the works by \cite{dqnGit}. The model is trained using Tensorflow with the architecture as shown in Fig 1.
-
-    The model was trained with Gamma and Epsilon values of 0.9, and the starting learning rate is set as 0.0005. A RELU activation function was used with an RMSProp optimization function. The Epsilon value is used as a threshold to use greedy approach randomly, hence . After certain intervals, the epsilon value is further reduced. The learning rate also decays exponentially by each episode. The model is trained for 20,000 episodes.
-
-    \begin{algorithm}[H]
-        \SetAlgoLined
-        initialize_hyperparameters()
-
-        \For{episode in [0,1...,20000]}{
-
-            \eIf{condition}{
-                instructions1\;
-                instructions2\;
-            }{
-                instructions3\;
-            }
-        }
-        \caption{How to write algorithms}
-    \end{algorithm}
+   	Q-Learning is a reinforcement learning algorithm \cite{watkins1992q}. A Q-Learning agent makes actions that are outside of the current policy. As such it is considered an 'off-policy' reinforcement learning algorithm. We used Q-learning to experiment with how well reinforcement learning could work with a problem such as 2048. For this we created a Deep Q Network (DQN) based on the works by \cite{dqnGit}. 
+    	
+    	The model is trained using Tensorflow. It consists of 2 convolution layers, an expansion, and a hidden layer. The first convolution layer consists of 2 convolution 2D tensors, while the second layer uses 4 tensors. The expansion and hidden layer reshapes the output to the required form. 
+				
+		The model was trained with Gamma and Epsilon values of 0.9, and the starting learning rate is set as 0.0005. The replay memory is initialized with 6 GB of memory which is used to sample the minibatch. A RELU activation function was used with an RMSProp optimization function. The Epsilon value is used as a threshold to use greedy approach randomly, hence . After certain intervals, the epsilon value is further reduced. The learning rate also decays exponentially by each episode. The model is trained for 20,000 episodes.
+		
+\begin{algorithm}[H]
+\SetAlgoLined
+ Initialize hyperparameters and replay memory
+ Initialize action value function Q with random weights	
+ \For{episode in 1 to M}{
+  Initialize 2048 board
+  \While{game is not lost}{
+  	\eIf{epsilon > random value}{
+  		Set up temporary board
+		Use greedy approach to take action and observe reward
+		Make the action with max reward on the real board 
+  	}{
+  		Find moves with the max Q value
+		\For{control in Q value table}{
+			Set up temporary board
+			Take control action and observe reward
+		}
+		Make the action with max reward on the real board
+  	}
+  	Store observations in replay memory
+  	\If{replay memory > memory limit}{
+  		Back-propagate and sample the mini batch
+  		Store layer weights
+  	}
+  	Reduce epsilon and learning rate values.
+  }
+ }
+ \caption{DQN Algorithm}
+\end{algorithm}
 
     \section{Experimental Results}
     This section should provide the details of the evaluation
