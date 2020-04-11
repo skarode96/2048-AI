@@ -113,17 +113,7 @@
         \caption{Greedy First Algorithm}
     \end{algorithm}
 
-    Sometimes it might happen that all the moves are generating the same score, as there is no merging of tiles happening in a particular state. In such cases the agent will randomly choose a move out of allowed choices. The greedy first approach is definitely better than a random move approach but its not always the case.
-
-    Consider the following situation,
-    \begin{figure}[h!]
-
-        \centering
-        \includegraphics[width=0.15\textwidth]{greedy_img_correction.png}
-        \caption{Demonstration of a game state when Greedy approach fails}
-    \end{figure}
-
-    The greedy first approach will take \textbf{LEFT} action in order to increase the final game score. In such cases, swiping \textbf{UP} then swiping \textbf{LEFT} is a better than swiping \textbf{LEFT} in the first place. In order to improve the greedy first algorithm, we introduce heuristics which helps agent take appropriate action based on the strategies and rewards assigned for the chosen strategy.
+    Sometimes it might happen that all the moves are generating the same score, as there is no merging of tiles happening in a particular state. In such cases the agent will randomly choose a move out of allowed choices.
 
     \subsubsection{Heuristics}
 
@@ -272,19 +262,48 @@
     \end{algorithm}
 
     \section{Experimental Results}
-    This section should provide the details of the evaluation. Specifically:
-    \begin{itemize}
-        \item Methodology: describe the evaluation criteria, the data used during the evaluation, and the methodology followed to perform the evaluation.
-        \item Results: present the results of the experimental evaluation. Graphical data and tables are two common ways to present the results. Also, a comparison with a baseline should be provided.
-        \item Discussion: discuss the implication of the results of the proposed algorithms/models. What are the weakness/strengths of the method(s) compared with the other methods/baseline?
-    \end{itemize}
+    This section should provide the details of the evaluation
 
     \subsection{Methodology}
     Each algorithm was evaluated based on the CPU wall time, and the max score reached. Random, Greedy, Expecti minimax and MCTS were further compared based on the number of moves required to reach their scores. For our DQN Agent, we analyze its scores over the number of episodes we trained it for.
     \subsection{Results}
 
+    Following figure \ref{comparative_analysis_of_algorithms} compares avg score and max score achieved by each algorithm
+
+    \begin{figure}[h!]
+
+        \centering
+        \includegraphics[width=0.5\textwidth]{Comparative Analysis.png}
+        \caption{Comparative Analysis of Algorithms}
+        \label{comparative_analysis_of_algorithms}
+    \end{figure}
+
+    Game progression chart described in figure \ref{game_score_progression_chart} which records score achieved over a period of time by individual algorithm
+
+    \begin{figure}[h!]
+
+        \centering
+        \includegraphics[width=0.5\textwidth]{Game Score Progression Chart.png}
+        \caption{Game Score Progression Chart}
+        \label{game_score_progression_chart}
+    \end{figure}
+
+
     \subsection{Interpretations}
-    - of results. Why something performed better ...
+
+    The greedy first approach is definitely better than a random move approach but its not always the case.
+
+    Consider the following situation,
+    \begin{figure}[h!]
+
+        \centering
+        \includegraphics[width=0.15\textwidth]{greedy_img_correction.png}
+        \caption{Demonstration of a game state when Greedy approach fails}
+    \end{figure}
+
+    The greedy first approach will take \textbf{LEFT} action in order to increase the final game score. In such cases, swiping \textbf{UP} then swiping \textbf{LEFT} is a better than swiping \textbf{LEFT} in the first place. In order to improve the greedy first algorithm, we introduce heuristics which helps agent take appropriate action based on the strategies and rewards assigned for the chosen strategy.
+
+
     \section{Conclusions}
     Provide a final discussion of the main results and conclusions of the report. Comment on the lesson learnt and possible improvements.
 
