@@ -83,7 +83,7 @@ def get_empty_cells(mat):
 
 def get_weighted_cell_score(mat):
     weighted_score = 0
-    weight_matrix = [[7, 5, 6, 4], [6, 5, 4, 3], [5, 4, 3, 2], [4, 3, 2, 1]]
+    weight_matrix = [[7, 6, 5, 4], [6, 5, 4, 3], [5, 4, 3, 2], [4, 3, 2, 1]]
     for i in range(4):
         for j in range(4):
                 weighted_score += mat[i][j]*weight_matrix[i][j]

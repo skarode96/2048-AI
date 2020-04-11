@@ -1,8 +1,13 @@
 \documentclass{svproc}
 \usepackage{url}
 \usepackage{cite}
-\usepackage{citep}
 \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+
+
 \def\UrlFont{\rmfamily}
 
 
@@ -32,95 +37,239 @@
     - Starcraft, DOTA AIs
 
     - Many reinforcement learning algorithms have been tested using games such as atari. (Talk about these researches)
-    In this paper we take a look at reinforcement learning for the game 2048. The goal of the game is to form a block with the highest number possible. 
+    In this paper we take a look at reinforcement learning for the game 2048. The goal of the game is to form a block with the highest number possible.
     - We implement 3 algorithms on the game environment: (Name the algos). The relative performance of these algorithms is then measured and evaluated.
 
 
     \section{Related Work}
     In this section you will discuss possible approaches to solve the problem you are addressing, justifying your choice of the 3 you have selected to evaluate. Also, briefly introduce the approaches you are evaluating with a specific emphasis on differences and similarities to the proposed approach(es).
 
-    \section{Problem Definition and Algorithm}
+    \section{Problem Definition and Algorithm} \label{Game Explanation}
 %    This section formalises the problem you are addressing and the models used to solve it. This section should provide a technical discussion of the chosen/implemented algorithms. A pseudocode description of the algorithm(s) can also be beneficial to a clear explanation. It is also possible to provide one example that clarifies the way an algorithm works. It is important to highlight in this section the possible parameters involved in the model and their impact, as well as all the implementation choices that can impact the algorithm.
-   
-  	% @kavith
-  	% What is 2048. What are we trying to achieve.
-	 
-	2048 is a non-deterministic, single-player game that was developed by a 19-year old web developer named Gabriele Cirulli. The game was released to the public in 2014 as a free and open-source software, and it quickly became the most popular game in the market when mobile versions of the game were released \cite{wiki_2048}. The game is interesting due to its simple controls and yet hard to master gameplay. One cannot simply win a game of 2048 by making random moves unless they’re very lucky. The game requires the player to have some sort of intelligence and an ability to look ahead of moves to determine what would lead them to go on and win the game, thus making it a perfect problem for an AI agent to solve. Also, 2048 can be clearly shown as a Markov Decision Process and that provides an ideal platform to compare and contrast different AI reinforcement learning techniques \cite{jaskowski, pedagogy}.
 
-	The 2048 game is played on a 4x4 grid where numbered tiles are present. The game randomly generated tiles with the numbers 2 and 4 after every move the player makes. The goal is to sum up similar tiles with one another until 2048 is reached in at least one tile. An example would be to add two tiles with the values 2 and they’d add up to become one tile with the value 4, now this tile with the value 4 must be added up with another tile with the value 4 to form a single tile with value 8, this goes on until two 8s are added to form 16 and so on until 2048 is reached. The rules of the game are very easy to understand but playing the game smartly in a constrained 4x4 grid is what is challenging about this game. The tiles are added by moving them either up, down, left or right and when one of the moves are performed all the tiles in the grid move in the specified direction. There is another element involved in this game and that is the score, it starts off at zero and as the player makes moves, it is updated based on the value of the new tiles that are formed due to the combination of previous tiles (i.e., if two tiles with the value of 128 are combined, then the resulting tile will have the value of 256 and thus the score will also increment by 256 points). A player wins when they obtain a tile with the value 2048, but the game does not end then and the users can continue the game to reach higher scores like 4096 and so on. The player is considered to have lost when all the tiles in the grid have a value and a move cannot be made to combine any of them.
+    % @kavith
+    % What is 2048. What are we trying to achieve.
 
-	This project aims to demonstrate how various Reinforcement Learning algorithms perform while trying to win a game of 2048. Five algorithms were chosen for this purpose and they are:
+    2048 is a non-deterministic, single-player game that was developed by a 19-year old web developer named Gabriele Cirulli. The game was released to the public in 2014 as a free and open-source software, and it quickly became the most popular game in the market when mobile versions of the game were released \cite{wiki_2048}. The game is interesting due to its simple controls and yet hard to master gameplay. One cannot simply win a game of 2048 by making random moves unless they’re very lucky. The game requires the player to have some sort of intelligence and an ability to look ahead of moves to determine what would lead them to go on and win the game, thus making it a perfect problem for an AI agent to solve. Also, 2048 can be clearly shown as a Markov Decision Process and that provides an ideal platform to compare and contrast different AI reinforcement learning techniques \cite{jaskowski, pedagogy}.
 
-	\begin{itemize}
+    The 2048 game is played on a 4x4 grid where numbered tiles are present. The game randomly generated tiles with the numbers 2 and 4 after every move the player makes. The goal is to sum up similar tiles with one another until 2048 is reached in at least one tile. An example would be to add two tiles with the values 2 and they’d add up to become one tile with the value 4, now this tile with the value 4 must be added up with another tile with the value 4 to form a single tile with value 8, this goes on until two 8s are added to form 16 and so on until 2048 is reached. The rules of the game are very easy to understand but playing the game smartly in a constrained 4x4 grid is what is challenging about this game. The tiles are added by moving them either up, down, left or right and when one of the moves are performed all the tiles in the grid move in the specified direction. There is another element involved in this game and that is the score, it starts off at zero and as the player makes moves, it is updated based on the value of the new tiles that are formed due to the combination of previous tiles (i.e., if two tiles with the value of 128 are combined, then the resulting tile will have the value of 256 and thus the score will also increment by 256 points). A player wins when they obtain a tile with the value 2048, but the game does not end then and the users can continue the game to reach higher scores like 4096 and so on. The player is considered to have lost when all the tiles in the grid have a value and a move cannot be made to combine any of them.
 
-		\item Random Algorithm
-		\item Greedy Algorithm
-		\item Expectiminimax  
-		\item Monte-Carlo Tree Search 
-		\item Q-learning
+    This project aims to demonstrate how various Reinforcement Learning algorithms perform while trying to win a game of 2048. Five algorithms were chosen for this purpose and they are:
 
-	\end{itemize}
-    
+    \begin{itemize}
 
-    \subsection{Environment}
-    
+        \item Random Algorithm
+        \item Greedy Algorithm
+        \item Expectiminimax
+        \item Monte-Carlo Tree Search
+        \item Q-learning
+
+    \end{itemize}
+
+
+    \subsection{Environment Setup For Simulating 2048 Game}
+    The GUI of the game environment is built using TKinter library in python. The main objective of this paper is to implement and evaluate algorithms for 2048 game, the running game environment setup is referenced from the following source\cite{yangshun}.
+    Further, the algorithms are implemented and simulated over the same environment. The README.md from the project repository \cite{AI-RKRS} has instructions for setting up the local environment and running implemented algorithms in the 2048 game.
+
+
+
     \subsection{Algorithms}
-    	%mention pseudo codes
-    	\subsubsection{Random Algorithm}
-    
-    	\subsubsection{Greedy Algorithm}
-    
-	\subsubsection{Expecti minimax}    
-    
-    	\subsubsection{Monte-Carlo Tree Search}
-    	
-    	(MCTS) is a heuristic search algorithm that is widely used to solve Reinforcement Learning problems. Hence, MCTS can find its own moves and explore the environment on its own by randomly playing different moves \cite{mcts_comparison}. In MCTS, each of the following steps are sequentially followed in an iterative manner to learn the policy of the problem at stake \cite{mcts_medium}:
-	
-	\begin{itemize}
-	
-		\item \textbf{\underline{Selection:}} In this step a leaf node from the tree which has the highest probability of maximising the value is selected accordingly. The chosen node is usually in the current representation of the tree and this current representation is not always the complete version, as most of the times the entire environment is not explored in one go. 
-		\newline
-		\item \textbf{\underline{Expansion:}} Now the selected node is expanded and therefore one or more child nodes are added to the tree. These newly added child nodes indicate future moves that can be played later.
-		\newline
-		\item \textbf{\underline{Play-out:}} In the play-out step, a random play is performed starting from a child node that was 	added during the expansion step. The play is done until a terminal state is reached in the game or until a fixed depth is reached. Based on the results of the random explorations, each of the child nodes that was expanded is given a reward. The reward is based on how close the final state reached by the exploration was to the favoured state.
-		\newline
-		\item \textbf{\underline{Backpropagation:}} Based on the results obtained at the child nodes, the tree is then traversed back through all the parent nodes while updating their statistics about the moves that could be followed to reach a terminal state. All the parent nodes including the root node is updated with the new values. Now with this new knowledge, the next time an exploitation is required to be done, the most optimal path is chosen based on the current knowledge of the tree. \\
-	
-    	 Some of the key properties of MCTS are \cite{mcts_keyProps}:\\
-	
-		\begin{itemize}
-	
-			\item The search can be performed iteratively for any number of times and yet when it comes to exploitation, a relatively optimal path will be present. Generally, the longer the exploration is performed, the better the final result.
-	
-			\item An evaluation function is not required as the random nature of the play-out step ensures no moves are ruled out and the relatively optimal path is always known in the tree.
-	
-			\item The search develops asymmetric trees that prunes sub-optimal paths automatically and can thus look for more optimal paths that could arrive deeper down the tree.
-			
-		\end{itemize}
-    
-    	\end{itemize}
-    
-    	\subsubsection{Q Learning}
-    	Q-Learning is a reinforcement learning algorithm \cite{watkins1992q}. A Q-Learning agent makes actions that are outside of the current policy. As such it is considered an 'off-policy' reinforcement learning algorithm. We used Q-learning to experiment with how well reinforcement learning could work with a problem such as 2048. For this we created a Deep Q Network (DQN) based on the works by \cite{dqnGit}. The model is trained using Tensorflow with the architecture as shown in Fig 1.
-				
-		The model was trained with Gamma and Epsilon values of 0.9, and the starting learning rate is set as 0.0005. A RELU activation function was used with an RMSProp optimization function. The Epsilon value is used as a threshold to use greedy approach randomly, hence . After certain intervals, the epsilon value is further reduced. The learning rate also decays exponentially by each episode. The model is trained for 20,000 episodes.
-		
-\begin{algorithm}[H]
-\SetAlgoLined
- initialize_hyperparameters()
- 
- \For{episode in [0,1...,20000]}{
-  
-  \eIf{condition}{
-   instructions1\;
-   instructions2\;
-   }{
-   instructions3\;
-  }
- }
- \caption{How to write algorithms}
-\end{algorithm}
-		
+
+    \par This section includes the choice of algorithms, heuristics and its detail implmentation.
+    \subsubsection{Random Moves Algorithm}
+
+    This project started off with implementing an agent which randomly makes a move on game board out of 4 choices. It plays until the game is over. This is done several times while keeping track of the end game score. This implementation sets the baseline for other algorithms which can be evaluated against this. Further, incremental improvements have been made so that agent can make informed decisions which will lead to a good score at the end of the run.
+
+
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        initialize\_gamegrid()\;
+        \While{game\_over != True}{
+            random\_move = get\_random\_move()\;
+            gamegrid.play(random\_move);
+        }
+        \caption{Random Moves Algorithm}
+    \end{algorithm}
+
+    As this implementation is completely based upon random actions, the score serves as a baseline for evaluating rest of the other algorithms implemented in this project.
+
+
+    \subsubsection{Greedy First Algorithm}
+    In this approach, an agent makes a move which is likely to generate a higher game score against a particular action. For instance, if the agent has 4 choices, it calculates the new game score for all the viable choices and then chooses an action which corresponds to the highest score.
+
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        initialize\_gamegrid()\;
+        \While{game\_over != True}{
+            score\_list = new list()\;
+            \For{action in actions}{
+                score\_for\_action = get\_score\_for\_move(action)\;
+                score\_list.append(score\_for\_action)
+            }
+            index =  get\_max\_score\_index(score\_list)\;
+            max\_score\_move = get\_corresponding\_move\_for(index)\;
+            gamegrid.play(max\_score\_move);
+        }
+        \caption{Greedy First Algorithm}
+    \end{algorithm}
+
+    Sometimes it might happen that all the moves are generating the same score, as there is no merging of tiles happening in a particular state. In such cases the agent will randomly choose a move out of allowed choices. The greedy first approach is definitely better than a random move approach but its not always the case.
+
+    Consider the following situation,
+    \begin{figure}[h!]
+
+        \centering
+        \includegraphics[width=0.15\textwidth]{greedy_img_correction.png}
+        \caption{Demonstration of a game state when Greedy approach fails}
+    \end{figure}
+
+    The greedy first approach will take \textbf{LEFT} action in order to increase the final game score. In such cases, swiping \textbf{UP} then swiping \textbf{LEFT} is a better than swiping \textbf{LEFT} in the first place. In order to improve the greedy first algorithm, we introduce heuristics which helps agent take appropriate action based on the strategies and rewards assigned for the chosen strategy.
+
+    \subsubsection{Heuristics}
+
+    Several heuristics are used to direct the optimization algorithm towards favourable positions. The precise choice of a heuristic has a huge effect on the performance of the algorithm. The various heuristics are weighted and combined into a positional score, which determines how "good" a given board position is. The following section defines the choice of heuristics
+
+    \begin{itemize}
+        \item \textbf{{Max Score generated by immediate Move}}
+        Using this heuristic agent can find the best move from a given set of actions based on the maximum score achieved. The calculation of score for the 2048 game is described in section \ref{Game Explanation}.
+        Mathematically, equation for finding best move can be stated as follows.
+        % \begin{equation} \label{max_score_equation}
+        %              best\_move = argmax(score\_list\_of\_each\_move)
+        % \end{equation}
+
+
+        \item {\textbf{Number of Empty cells on game board after performing a move}}
+
+        It takes into account the number of free tiles left, if there are few numbers of free available tiles, then it’s likely that the game will end with low premature scores, so this heuristic tries to ensure that the player AI agent chooses the move that allows more free spaces by looking ahead. There is a penalty for having too few free tiles, since options can quickly run out when the game board gets too cramped.
+
+
+        \item {\textbf{Weight Matrix Multiplication Score}}
+        It has been observed that \cite{blog_2048_weight_matrix}, the agent can score well if the tiles with large values are maintained in the corner of the game grid. A common strategy, is to push the bigger tiles near any one corner and the smaller tiles away from that corner. By multiplying a weight matrix to game board, we can mimic this strategy by setting the values of \textbf{W} such that the weight decreases from the top left to the bottom right.
+
+
+        \begin{equation}
+            \textbf{W} =
+            \begin{pmatrix}
+                7 & 6 & 5 & 4 \\
+                6 & 5 & 4 & 3\\
+                5 & 4 & 3 & 2 \\
+                4 & 3 & 2 & 1 \\
+            \end{pmatrix}
+        \end{equation}
+
+        \begin{equation} \label{weighted_score_equation}
+        \textbf{ weighted\_cell\_score} = \textbf{W} \times \textbf{game\_grid\_matrix}
+        \end{equation}
+
+        The above equation \ref{weighted_score_equation} demonstrates that, the agent will tend to make moves such that the bigger tiles are always closer to the corner than the smaller tiles, which agrees with the desired strategy.The above weight matrix may not be the most ideal, it only helps illustrate the choice of the underlying heuristic.
+        It is possible to use other optimization methods, such as Genetic Algorithms and particle swarm optimization (PSO), which is currently out of scope of this project.
+
+        \item {\textbf{Monotonicity property}}
+        This heuristic tries to ensure that the values of the tiles are all either increasing or decreasing along both the left/right and up/down directions. This heuristic alone captures the intuition that many others have mentioned, that higher valued tiles should be clustered in a corner. It will typically prevent smaller valued tiles from getting orphaned and will keep the board very organized, with smaller tiles cascading in and filling up into the larger tiles. A perfectly monotonic grid looks like figure \ref{fig:monotonicity}.
+
+        \begin{figure}[h!]
+
+            \centering
+            \includegraphics[width=0.15\textwidth]{monotonicity_2048.png}
+            \caption{Demonstration of a monotonic grid}
+            \label{fig:monotonicity}
+        \end{figure}
+
+
+
+    \end{itemize}
+
+
+    \subsubsection{Implementing Heuristics}
+
+    In this project, implementation of the first three heuristics namely Max Score generated by immediate Move, Number of Empty cells, and weight matrix multiplication is done and its behavior is studied in greedy algorithm as well as Monte Carlo Tree Search.
+    The algorithm can be updated with the following expression to accommodate heuristic score while computing next move.
+
+
+    \begin{multline*} \label{heuristic_score_equation}
+    Heuristic \ Score  = \alpha \times Max \ Score \ for \  Immidiate \ Move \\
+    + \beta \times Number \ of \ Empty \  Cells \\
+    + \gamma \times Weighted \ Matrix \ Multiplication \ Score  + K
+    \end{multline*}
+
+    where, \(\alpha ,  \beta and  \gamma \) are coefficients which helps tune the heuristic function.
+    The combination of these parameters results in weighted heuristic function which can be used to study variation in performance of algorithms.
+
+
+
+    \subsubsection{Monte-Carlo Tree Search}
+
+    (MCTS) is a heuristic search algorithm that is widely used to solve Reinforcement Learning problems. Hence, MCTS can find its own moves and explore the environment on its own by randomly playing different moves \cite{mcts_comparison}. In MCTS, each of the following steps are sequentially followed in an iterative manner to learn the policy of the problem at stake \cite{mcts_medium}:
+
+    \begin{itemize}
+
+        \item \textbf{\underline{Selection:}} In this step a leaf node from the tree which has the highest probability of maximising the value is selected accordingly. The chosen node is usually in the current representation of the tree and this current representation is not always the complete version, as most of the times the entire environment is not explored in one go.
+        \newline
+        \item \textbf{\underline{Expansion:}} Now the selected node is expanded and therefore one or more child nodes are added to the tree. These newly added child nodes indicate future moves that can be played later.
+        \newline
+        \item \textbf{\underline{Play-out:}} In the play-out step, a random play is performed starting from a child node that was 	added during the expansion step. The play is done until a terminal state is reached in the game or until a fixed depth is reached. Based on the results of the random explorations, each of the child nodes that was expanded is given a reward. The reward is based on how close the final state reached by the exploration was to the favoured state.
+        \newline
+        \item \textbf{\underline{Backpropagation:}} Based on the results obtained at the child nodes, the tree is then traversed back through all the parent nodes while updating their statistics about the moves that could be followed to reach a terminal state. All the parent nodes including the root node is updated with the new values. Now with this new knowledge, the next time an exploitation is required to be done, the most optimal path is chosen based on the current knowledge of the tree. \\
+
+        Some of the key properties of MCTS are \cite{mcts_keyProps}:\\
+
+        \begin{itemize}
+
+            \item The search can be performed iteratively for any number of times and yet when it comes to exploitation, a relatively optimal path will be present. Generally, the longer the exploration is performed, the better the final result.
+
+            \item An evaluation function is not required as the random nature of the play-out step ensures no moves are ruled out and the relatively optimal path is always known in the tree.
+
+            \item The search develops asymmetric trees that prunes sub-optimal paths automatically and can thus look for more optimal paths that could arrive deeper down the tree.
+
+        \end{itemize}
+
+    \end{itemize}
+
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        Const TREE\_SEARCH\_DEPTH = 400\;
+        initialize\_gamegrid()\;
+        \While{game\_over != True}{
+            score\_list = new list()\;
+            \For{action in actions}{
+                score = 0\;
+                i = TREE_SEARCH_DEPTH\;
+                \While{i > 0}{
+                    random\_move = get\_random\_move()\;
+                    heuristic\_score = get\_
+                }
+                score\_for\_action = get\_score\_for\_move(action)\;
+                score\_list.append(score\_for\_action)
+            }
+            index =  get\_max\_score\_index(score\_list)\;
+            max\_score\_move = get\_corresponding\_move\_for(index)\;
+            gamegrid.play(max\_score\_move);
+        }
+        \caption{Monte Carlo Tree Search Algorithm}
+    \end{algorithm}
+
+
+    \subsubsection{Q Learning}
+    Q-Learning is a reinforcement learning algorithm \cite{watkins1992q}. A Q-Learning agent makes actions that are outside of the current policy. As such it is considered an 'off-policy' reinforcement learning algorithm. We used Q-learning to experiment with how well reinforcement learning could work with a problem such as 2048. For this we created a Deep Q Network (DQN) based on the works by \cite{dqnGit}. The model is trained using Tensorflow with the architecture as shown in Fig 1.
+
+    The model was trained with Gamma and Epsilon values of 0.9, and the starting learning rate is set as 0.0005. A RELU activation function was used with an RMSProp optimization function. The Epsilon value is used as a threshold to use greedy approach randomly, hence . After certain intervals, the epsilon value is further reduced. The learning rate also decays exponentially by each episode. The model is trained for 20,000 episodes.
+
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        initialize_hyperparameters()
+
+        \For{episode in [0,1...,20000]}{
+
+            \eIf{condition}{
+                instructions1\;
+                instructions2\;
+            }{
+                instructions3\;
+            }
+        }
+        \caption{How to write algorithms}
+    \end{algorithm}
+
     \section{Experimental Results}
     This section should provide the details of the evaluation. Specifically:
     \begin{itemize}
@@ -128,13 +277,13 @@
         \item Results: present the results of the experimental evaluation. Graphical data and tables are two common ways to present the results. Also, a comparison with a baseline should be provided.
         \item Discussion: discuss the implication of the results of the proposed algorithms/models. What are the weakness/strengths of the method(s) compared with the other methods/baseline?
     \end{itemize}
-    	
-		\subsection{Methodology}
-		 Each algorithm was evaluated based on the CPU wall time, and the max score reached. Random, Greedy, Expecti minimax and MCTS were further compared based on the number of moves required to reach their scores. For our DQN Agent, we analyze its scores over the number of episodes we trained it for.
-		\subsection{Results}
-		
-		\subsection{Interpretations}
-			- of results. Why something performed better ...
+
+    \subsection{Methodology}
+    Each algorithm was evaluated based on the CPU wall time, and the max score reached. Random, Greedy, Expecti minimax and MCTS were further compared based on the number of moves required to reach their scores. For our DQN Agent, we analyze its scores over the number of episodes we trained it for.
+    \subsection{Results}
+
+    \subsection{Interpretations}
+    - of results. Why something performed better ...
     \section{Conclusions}
     Provide a final discussion of the main results and conclusions of the report. Comment on the lesson learnt and possible improvements.
 
@@ -142,5 +291,5 @@
 
     \bibliography{ai_doc}
     \bibliographystyle{ieeetr}
-    
+
 \end{document}
