@@ -26,16 +26,16 @@ class ExpectimaxAlgorithm:
         evaluation_list.append(header_list)
         while True:
             # Find all moves with the fitness
-            # List of Tuples: moves_list = [(move, finess_value), ...]
-            moves_list = self.get_moves(board.matrix)
+            # List of Tuples: moves_with_fitness_dict = [(move, finess_value), ...]
+            moves_with_fitness_dict = self.get_moves(board.matrix)
             # Choose the best move with max fitness
             max_fitness = -float("inf")
             move_location = 0
-            for index, move in enumerate(moves_list):
+            for index, move in enumerate(moves_with_fitness_dict):
                 if move[1] >= max_fitness:
                     max_fitness = move[1]
                     move_location = index
-            move = moves_list[move_location][0]
+            move = moves_with_fitness_dict[move_location][0]
             # Play given move and Checks if we can add more tiles: if not then game over
             print(board.matrix)
             if not board.play_move(move, self.MERGE_FUNCTIONS):
@@ -90,26 +90,26 @@ class ExpectimaxAlgorithm:
         if depth == 0 or (move and not self.move_exists(board)):
             return self.evaluation(board)
 
-        alpha = self.evaluation(board)
+        fitness = self.evaluation(board)
         if move:
             for _, action in self.MERGE_FUNCTIONS.items():
                 child, _, _, _, _ = action(board)
-                alpha = max(alpha, self.expectimax_search(child, depth - 1))
+                fitness = max(fitness, self.expectimax_search(child, depth - 1))
         else:
-            alpha = 0
+            fitness = 0
             # Find all possible position of tile insertion: ie. tiles which have 0 in it.
             # And for each (i,j)th location of zero tile make create two child
             # c1_expected_2: board with 90% chances of getting 2
             # c2_expected_4: board with 10% chances of getting 4
-            zeros = [(i, j) for i, j in itertools.product(range(4), range(4)) if board[i][j] == 0]
-            for i, j in zeros:
+            empty_positions = [(i, j) for i, j in itertools.product(range(4), range(4)) if board[i][j] == 0]
+            for i, j in empty_positions:
                 child1_expected_2 = [[x for x in row] for row in board]
                 child2_expected_4 = [[x for x in row] for row in board]
                 child1_expected_2[i][j] = 2
                 child2_expected_4[i][j] = 4
-                alpha += (0.9 * self.expectimax_search(child1_expected_2, depth - 1, True) / len(zeros)
-                        + 0.1 * self.expectimax_search(child2_expected_4, depth - 1, True) / len(zeros))
-        return alpha
+                fitness += (0.9 * self.expectimax_search(child1_expected_2, depth - 1, True) / len(empty_positions)
+                        + 0.1 * self.expectimax_search(child2_expected_4, depth - 1, True) / len(empty_positions))
+        return fitness
 
     def move_exists(self, board):
         for row in board:
